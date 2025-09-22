@@ -1,0 +1,16 @@
+# Flask and extensions
+Flask  # Web framework
+Flask-Cors  # Handle Cross-Origin Resource Sharing
+Flask-JWT-Extended  # JWT authentication
+Flask-SQLAlchemy  # SQLAlchemy integration
+
+# Database
+SQLAlchemy  # Core SQLAlchemy library
+
+# Utilities
+python-dotenv  # Load env variables from .env
+requests  # HTTP library
+
+# Testing
+pytest
+pytest-flask
