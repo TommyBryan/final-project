@@ -1,4 +1,5 @@
-src/                
+src/         
+       
 ├── components/          
 │   ├── Flashcards/
 │   ├── MusicPlayer/        # Images, icons, music, etc.
