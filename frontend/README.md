@@ -1,5 +1,8 @@
-src/         
-       
+# Front- End structure
+```
+├────frontend/
+├─────public/
+├──────src/             
 ├── components/          
 │   ├── Flashcards/
 │   ├── MusicPlayer/        # Images, icons, music, etc.
@@ -18,3 +21,4 @@ src/
 ├── App.jsx
 ├── main.jsx
 └── index.css
+```
