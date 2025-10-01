@@ -1,3 +1,4 @@
+```
 study-app/
 ├── public/
 │   └── index.html          # Base HTML template
@@ -12,3 +13,4 @@ study-app/
 ├── package.json            # Project dependencies & scripts
 ├── tsconfig.json           # TypeScript config (if using TS)
 └── README.md               # Project documentation
+```
