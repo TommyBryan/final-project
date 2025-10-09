@@ -1,2 +1,0 @@
-React entry
-supabase connection
