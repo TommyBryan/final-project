@@ -71,3 +71,25 @@ export default defineConfig([
   },
 ])
 ```
+# Front-end structure 
+
+```
+
+src/
+├── App.js                     // Main dashboard component, state, and layout
+├── components/
+│   ├── Header.js              // App header with dark mode/music toggle
+│   ├── Navigation.js          // Tab navigation buttons
+│   ├── MusicPlayer.js         // Bottom music player bar
+│   ├── OverviewTab.js         // Container for Overview tab content
+│   │   └── overview/
+│   │       ├── PomodoroTimer.js
+│   │       ├── TodoList.js
+│   │       └── PdfUpload.js
+│   ├── FlashcardsTab.js       // Flashcards tab content
+│   └── VideosTab.js           // Videos tab content
+└── hooks/
+    ├── usePomodoroTimer.js    // Custom hook for Pomodoro timer logic
+    ├── useFlashcards.js       // Custom hook for Flashcards logic
+    └── useTodos.js            // Custom hook for Todo list logic
+```
