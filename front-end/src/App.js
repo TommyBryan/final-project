@@ -19,7 +19,7 @@ export default function StudyAppDashboard() {
       return storedDarkMode ? JSON.parse(storedDarkMode) : false;
     } catch (error) {
       console.error("Failed to load dark mode from localStorage:", error);
-      return false; // Fallback to default
+      return false; // fallback to default
     }
   });
   const [activeTab, setActiveTab] = useState('overview');
