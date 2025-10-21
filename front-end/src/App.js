@@ -12,15 +12,34 @@ import { useFlashcards } from './hooks/useFlashcards';
 import { useTodos } from './hooks/useTodos';
 
 export default function StudyAppDashboard() {
-  const [darkMode, setDarkMode] = useState(false);
+  // darkMode from localStorage, default to false if not found
+  const [darkMode, setDarkMode] = useState(() => {
+    try {
+      const storedDarkMode = localStorage.getItem('iNtellecta-darkMode');
+      return storedDarkMode ? JSON.parse(storedDarkMode) : false;
+    } catch (error) {
+      console.error("Failed to load dark mode from localStorage:", error);
+      return false; // Fallback to default
+    }
+  });
   const [activeTab, setActiveTab] = useState('overview');
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [studyTopic, setStudyTopic] = useState('React Programming');
 
-  // Custom hooks for managing state logic
+  // hooks for managing state logic
   const { pomodoroTime, pomodoroActive, isBreak, togglePomodoro, resetPomodoro, formatTime } = usePomodoroTimer();
   const { flashcards, addFlashcard, flipCard, newCardFront, setNewCardFront, newCardBack, setNewCardBack } = useFlashcards();
   const { todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo } = useTodos();
+
+   // saves darkMode preference to localStorage whenever it changes
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('iNtellecta-darkMode', JSON.stringify(darkMode));
+    } catch (error) {
+      console.error("Failed to save dark mode to localStorage:", error);
+    }
+  }, [darkMode]);
 
   const bgClass = darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 to-indigo-100';
   const cardBg = darkMode ? 'bg-gray-800' : 'bg-white';
