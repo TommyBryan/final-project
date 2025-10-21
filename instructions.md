@@ -1,4 +1,30 @@
-# Once Installed React + Vite, the project should have this:
+# Instructions to get started with React + Vite
+1. Install Vite
+```bash
+# The `.` creates the project in the current directory
+npm create vite@latest .
+```
+Choose React and then TypeScript when prompted. This creates a React + Vite + TypeScript project in the current folder.
+
+2. Install dependencies:
+```bash
+npm install
+```
+3. Start dev server:
+```bash
+npm run dev
+```
+
+4. Add React Router (web):
+```bash
+npm install react-router-dom
+```
+
+If using TypeScript also add types:
+```
+npm install -D @types/react-router-dom
+```
+## Once Installed React + Vite, the project should have this:
 ```
 my-app/
 ├── index.html
