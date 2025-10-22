@@ -4,12 +4,12 @@ study-app/
 │   ├── public/
 │   │   └── index.html          # Base HTML template
 │   ├── src/
-│   │   ├── App.tsx             # Main app (handles routing & auth)
-│   │   ├── index.tsx           # React entry point
+│   │   ├── App.jsx             # Main app (handles routing & auth)
+│   │   ├── index.jsx           # React entry point
 │   │   ├── supabaseClient.ts   # Supabase connection
-│   │   ├── Login.tsx           # Login form
-│   │   ├── Signup.tsx          # Signup form
-│   │   └── Home.tsx            # Example protected page
+│   │   ├── Login.jsx           # Login form
+│   │   ├── Signup.jsx          # Signup form
+│   │   └── Home.jsx            # Example protected page
 │   ├── .env                    # Supabase keys
 │   ├── package.json            # Dependencies for the front end
 │   ├── tsconfig.json           # TypeScript config
