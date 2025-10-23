@@ -1,15 +1,15 @@
-// src/App.js
+// src/App.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Moon, Sun, Music, BookOpen } from 'lucide-react';
-import Header from './components/Header';
-import Navigation from './components/Navigation';
-import OverviewTab from './components/OverviewTab';
-import FlashcardsTab from './components/FlashcardsTab';
-import VideosTab from './components/VideosTab';
-import MusicPlayer from './components/MusicPlayer';
-import { usePomodoroTimer } from './hooks/UsePomodoroTimer';
-import { useFlashcards } from './hooks/useFlashcards';
-import { useTodos } from './hooks/useTodos';
+import Header from "./components/Header.jsx";
+import Navigation from "./components/Navigation.jsx";
+import OverviewTab from "./components/OverviewTab.jsx";
+import FlashcardsTab from "./components/FlashcardsTab.jsx";
+import VideosTab from "./components/VideosTab.jsx";
+import MusicPlayer from "./components/MusicPlayer.jsx";
+import { usePomodoroTimer } from "./hooks/UsePomodoroTimer.jsx";
+import { useFlashcards } from "./hooks/UseFlashcards.jsx";
+import { useTodos } from "./hooks/UseTodos.jsx";
 
 export default function StudyAppDashboard() {
   // darkMode from localStorage, default to false if not found
