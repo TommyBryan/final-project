@@ -7,7 +7,7 @@ import OverviewTab from './components/OverviewTab';
 import FlashcardsTab from './components/FlashcardsTab';
 import VideosTab from './components/VideosTab';
 import MusicPlayer from './components/MusicPlayer';
-import { usePomodoroTimer } from './hooks/usePomodoroTimer';
+import { usePomodoroTimer } from './hooks/UsePomodoroTimer';
 import { useFlashcards } from './hooks/useFlashcards';
 import { useTodos } from './hooks/useTodos';
 

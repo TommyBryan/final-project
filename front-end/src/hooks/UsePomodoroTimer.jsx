@@ -1,4 +1,4 @@
-// src/hooks/usePomodoroTimer.js
+// src/hooks/usePomodoroTimer.jsx
 import { useState, useEffect, useRef } from 'react';
 
 const POMODORO_KEY = 'iNtellecta-pomodoro';

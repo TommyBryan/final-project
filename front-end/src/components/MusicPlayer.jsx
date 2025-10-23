@@ -1,4 +1,4 @@
-// src/components/MusicPlayer.js
+// src/components/MusicPlayer.jsx
 import React from 'react';
 import { Music, Pause } from 'lucide-react';
 

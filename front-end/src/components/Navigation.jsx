@@ -1,4 +1,4 @@
-// src/components/Navigation.js
+// src/components/Navigation.jsx
 import React from 'react';
 
 export default function Navigation({ activeTab, setActiveTab, cardBg, borderClass, secondaryText }) {
