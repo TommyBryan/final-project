@@ -1,4 +1,4 @@
-// src/hooks/useFlashcards.js
+// src/hooks/useFlashcards.jsx
 import { useState, useEffect } from 'react';
 
 const FLASHCARDS_KEY = 'iNtellecta-flashcards';

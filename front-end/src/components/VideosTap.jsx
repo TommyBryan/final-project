@@ -1,4 +1,4 @@
-// src/components/VideosTab.js
+// src/components/VideosTab.jsx
 import React from 'react';
 import { Video } from 'lucide-react';
 
