@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==== Base styles ==== */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #f9fafb; /* light gray background */
+  color: #111827; /* dark gray text */
+}
+
+/* Smooth transitions for buttons, links, etc. */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Scrollbar styling (optional but nice touch) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #60a5fa, #8b5cf6);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #3b82f6, #7c3aed);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Reusable container for consistent spacing */
+.container {
+  @apply max-w-7xl mx-auto px-4;
+}
