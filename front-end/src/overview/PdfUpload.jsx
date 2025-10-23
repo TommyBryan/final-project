@@ -1,4 +1,4 @@
-// src/components/overview/PdfUpload.js
+// src/components/overview/PdfUpload.jsx
 import React from 'react';
 import { Upload } from 'lucide-react';
 

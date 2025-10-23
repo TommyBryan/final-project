@@ -1,4 +1,4 @@
-// src/components/overview/PomodoroTimer.js
+// src/components/overview/PomodoroTimer.jsx
 import React from 'react';
 import { Clock, Play, Pause } from 'lucide-react';
 
