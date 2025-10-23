@@ -1,4 +1,4 @@
-// src/components/FlashcardsTab.js
+// src/components/FlashcardsTab.jsx
 import React from 'react';
 import { Plus } from 'lucide-react';
 
