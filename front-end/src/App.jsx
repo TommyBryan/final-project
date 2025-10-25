@@ -6,7 +6,7 @@ import OverviewTab from './components/OverviewTab.jsx';
 import FlashcardsTab from './components/FlashcardsTab.jsx';
 import VideosTab from './components/VideosTab.jsx';
 import MusicPlayer from './components/MusicPlayer.jsx';
-import { usePomodoroTimer } from "./hooks/usePomodoroTimer.js";
+import { usePomodoroTimer } from "./hooks/UsePomodoroTimer.js";
 import { useFlashcards } from "./hooks/useFlashcards.js";
 import { useTodos } from "./hooks/useTodos.js";
 
@@ -24,8 +24,22 @@ export default function StudyAppDashboard() {
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [studyTopic, setStudyTopic] = useState('React Programming');
 
-  // custom hooks for managing state logic
-  const { pomodoroTime, pomodoroActive, isBreak, togglePomodoro, resetPomodoro, formatTime } = usePomodoroTimer();
+  // pomodoro timer hook
+const {
+  pomodoroTime,
+  pomodoroActive,
+  isBreak,
+  togglePomodoro,
+  resetPomodoro,
+  formatTime,
+  studyDuration,
+  breakDuration,
+  setStudyDuration,
+  setBreakDuration
+} = usePomodoroTimer();
+
+
+
   const { flashcards, addFlashcard, flipCard, newCardFront, setNewCardFront, newCardBack, setNewCardBack } = useFlashcards();
   const { todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo } = useTodos();
 
@@ -60,13 +74,24 @@ export default function StudyAppDashboard() {
       />
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {activeTab === 'overview' && (
-          <OverviewTab
-            {...commonProps}
-            pomodoroProps={{ pomodoroTime, pomodoroActive, isBreak, togglePomodoro, resetPomodoro, formatTime }}
-            todoProps={{ todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo }}
-          />
-        )}
+{activeTab === 'overview' && (
+  <OverviewTab
+    {...commonProps}
+    pomodoroProps={{
+      pomodoroTime,
+      pomodoroActive,
+      isBreak,
+      togglePomodoro,
+      resetPomodoro,
+      formatTime,
+      studyDuration,
+      breakDuration,
+      setStudyDuration,
+      setBreakDuration
+    }}
+    todoProps={{ todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo }}
+  />
+)}
 
         {activeTab === 'flashcards' && (
           <FlashcardsTab
