@@ -1,16 +1,24 @@
 // src/components/Header.jsx
-import React from 'react';
-import { Moon, Sun, Music, } from 'lucide-react';
+import React, { useState } from 'react';
+import { Moon, Sun, Music, Menu, X } from 'lucide-react';
 
 import IntellectaLogo from '../assets/intellecta-logo.svg';
 
-export default function Header({ darkMode, setDarkMode, musicPlaying, setMusicPlaying, cardBg, borderClass }) {
+export default function Header({ darkMode, setDarkMode, musicPlaying, setMusicPlaying, cardBg, borderClass, activeTab, setActiveTab }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // stating hamburger menu
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const navItemClass = `px-6 py-3 font-medium capitalize transition-colors block ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'} rounded-lg`;
+  const navItemActiveClass = 'border-l-4 border-indigo-600 text-indigo-600 bg-opacity-10'; // stylization for active tab in mobile
+
   return (
-    
     <header className={`${cardBg} shadow-md border-b ${borderClass}`}>
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+        {/* logo and app Name */}
         <div className="flex items-center gap-3">
-
           <img
             src={IntellectaLogo}
             alt="iNtellecta Logo"
@@ -18,7 +26,25 @@ export default function Header({ darkMode, setDarkMode, musicPlaying, setMusicPl
           />
           <h1 className="text-2xl font-bold">iNtellecta</h1>
         </div>
-        
+
+        {/* desktop Navigation (hidden on small screens) */}
+        <nav className="hidden md:flex gap-1">
+          {['overview', 'flashcards', 'videos'].map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-6 py-3 font-medium capitalize transition-colors ${
+                activeTab === tab
+                  ? 'border-b-2 border-indigo-600 text-indigo-600'
+                  : darkMode ? 'text-gray-400 hover:text-gray-200' : 'text-gray-600 hover:text-gray-800'
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </nav>
+
+        {/* right side controls & Hamburger menu button */}
         <div className="flex items-center gap-4">
           <button
             onClick={() => setMusicPlaying(!musicPlaying)}
@@ -32,8 +58,37 @@ export default function Header({ darkMode, setDarkMode, musicPlaying, setMusicPl
           >
             {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
+
+          {/* hamburger button */}
+          <button
+            onClick={toggleMenu}
+            className={`md:hidden p-2 rounded-lg ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
       </div>
+
+      {/* mobile Menu collapsible */}
+      {isMenuOpen && (
+        <div className={`md:hidden ${cardBg} pb-4 px-4 border-t ${borderClass} transition-all duration-300 ease-in-out`}>
+          <nav className="flex flex-col gap-2 pt-2">
+            {['overview', 'flashcards', 'videos'].map(tab => (
+              <button
+                key={tab}
+                onClick={() => {
+                  setActiveTab(tab);
+                  setIsMenuOpen(false); // closing menu after selection
+                }}
+                className={`${navItemClass} ${activeTab === tab ? navItemActiveClass : darkMode ? 'text-gray-300' : 'text-gray-700'}`}
+              >
+                {tab}
+              </button>
+            ))}
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
