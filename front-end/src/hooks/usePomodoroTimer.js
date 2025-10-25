@@ -64,7 +64,7 @@ export function usePomodoroTimer(defaultStudy = 25 * 60, defaultBreak = 5 * 60) 
     formatTime,
     studyDuration,
     breakDuration,
-    setStudyDuration: (mins) => setStudyDuration(mins * 1),
-    setBreakDuration: (mins) => setBreakDuration(mins * 1),
+    setStudyDuration: (mins) => setStudyDuration(mins * 60),
+    setBreakDuration: (mins) => setBreakDuration(mins * 60),
   };
 }
