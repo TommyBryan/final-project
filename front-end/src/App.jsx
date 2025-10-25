@@ -6,6 +6,7 @@ import OverviewTab from './components/OverviewTab.jsx';
 import FlashcardsTab from './components/FlashcardsTab.jsx';
 import VideosTab from './components/VideosTab.jsx';
 import MusicPlayer from './components/MusicPlayer.jsx';
+import WelcomeCard from './components/WelcomeCard.jsx'; // <--- Ensure this is imported
 import { usePomodoroTimer } from "./hooks/usePomodoroTimer.js";
 import { useFlashcards } from "./hooks/useFlashcards.js";
 import { useTodos } from "./hooks/useTodos.js";
@@ -38,7 +39,7 @@ export default function StudyAppDashboard() {
   }, [darkMode]);
 
   const bgClass = darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 to-indigo-100';
-  const cardBg = darkMode ? 'bg-gray-800' : 'bg-white';
+  const cardBg = darkMode ? 'bg-gray-800' : 'bg-white'; // cardBg is no longer needed by WelcomeCard
   const textClass = darkMode ? 'text-gray-100' : 'text-gray-900';
   const secondaryText = darkMode ? 'text-gray-400' : 'text-gray-600';
   const borderClass = darkMode ? 'border-gray-700' : 'border-gray-200';
@@ -60,6 +61,16 @@ export default function StudyAppDashboard() {
       />
 
       <main className="max-w-7xl mx-auto px-4 py-8">
+        {/* --- PLACE THE SIMPLIFIED WELCOMECARD HERE --- */}
+        <div className="mb-8"> 
+          <WelcomeCard 
+            user_name="Student" 
+            textClass={textClass}       // <--- Pass commonProps for text theming
+            secondaryText={secondaryText} // <--- Pass commonProps for text theming
+          /> 
+        </div>
+        {/* ------------------------------------------- */}
+
         {activeTab === 'overview' && (
           <OverviewTab
             {...commonProps}
