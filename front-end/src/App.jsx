@@ -6,9 +6,9 @@ import OverviewTab from './components/OverviewTab.jsx';
 import FlashcardsTab from './components/FlashcardsTab.jsx';
 import VideosTab from './components/VideosTab.jsx';
 import MusicPlayer from './components/MusicPlayer.jsx';
-import { usePomodoroTimer } from './hooks/usePomodoroTimer.js';
-import { useFlashcards } from './hooks/useFlashcards.js';
-import { useTodos } from './hooks/useTodos.js';
+import { usePomodoroTimer } from "./hooks/usePomodoroTimer.js";
+import { useFlashcards } from "./hooks/useFlashcards.js";
+import { useTodos } from "./hooks/useTodos.js";
 
 export default function StudyAppDashboard() {
   const [darkMode, setDarkMode] = useState(() => {
