@@ -98,7 +98,7 @@ export function usePomodoroTimer() {
 
   const resetPomodoro = () => {
     setState({
-      pomodoroTime: 25 * 60,
+      pomodoroTime: 50 * 60,
       pomodoroActive: false,
       isBreak: false,
       lastTickTimestamp: Date.now()
