@@ -57,32 +57,32 @@ export default function PomodoroTimer({
 
       {/* settings section for duration */}
       <div className={`w-full mt-8 pt-6 border-t ${borderClass} flex justify-around items-center`}>
-         <div className="text-center">
-           <label htmlFor="study-duration" className={`block text-sm font-medium ${secondaryText}`}>
-             Study (min)
-           </label>
-           <input
-             type="number"
-             id="study-duration"
+        <div className="text-center">
+          <label htmlFor="study-duration" className={`block text-sm font-medium ${secondaryText}`}>
+            Study (min)
+          </label>
+          <input
+            type="number"
+            id="study-duration"
              value={Math.round(studyDuration / 60)} // convert seconds to minutes for display
-             onChange={(e) => setStudyDuration(Number(e.target.value))}
-             className={`w-24 mt-1 p-2 text-center rounded-md border ${borderClass} ${cardBg} ${textClass} focus:ring-2 focus:ring-indigo-500 disabled:opacity-50`}
+            onChange={(e) => setStudyDuration(Number(e.target.value))}
+          className={`w-24 mt-1 p-2 text-center rounded-md border ${borderClass} ${cardBg} ${textClass} focus:ring-2 focus:ring-indigo-500 disabled:opacity-50`}
              disabled={pomodoroActive} // disable input while the timer is running
-           />
-         </div>
-         <div className="text-center">
-           <label htmlFor="break-duration" className={`block text-sm font-medium ${secondaryText}`}>
-             Break (min)
-           </label>
-           <input
-             type="number"
-             id="break-duration"
+          />
+        </div>
+        <div className="text-center">
+          <label htmlFor="break-duration" className={`block text-sm font-medium ${secondaryText}`}>
+            Break (min)
+          </label>
+          <input
+            type="number"
+            id="break-duration"
              value={Math.round(breakDuration / 60)} // convert seconds to minutes for display
-             onChange={(e) => setBreakDuration(Number(e.target.value))}
-             className={`w-24 mt-1 p-2 text-center rounded-md border ${borderClass} ${cardBg} ${textClass} focus:ring-2 focus:ring-indigo-500 disabled:opacity-50`}
+            onChange={(e) => setBreakDuration(Number(e.target.value))}
+            className={`w-24 mt-1 p-2 text-center rounded-md border ${borderClass} ${cardBg} ${textClass} focus:ring-2 focus:ring-indigo-500 disabled:opacity-50`}
              disabled={pomodoroActive} // disable input while the timer is running
-           />
-         </div>
+          />
+        </div>
       </div>
     </div>
   );
