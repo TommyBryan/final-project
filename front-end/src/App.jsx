@@ -7,7 +7,7 @@ import FlashcardsTab from './components/FlashcardsTab.jsx';
 import VideosTab from './components/VideosTab.jsx';
 import MusicPlayer from './components/MusicPlayer.jsx';
 import WelcomeCard from './components/WelcomeCard.jsx';
-import { usePomodoroTimer } from "./hooks/UsePomodoroTimer.js";
+import { usePomodoroTimer } from "./hooks/usePomodoroTimer.js";
 import { useFlashcards } from "./hooks/useFlashcards.js";
 import { useTodos } from "./hooks/useTodos.js";
 
