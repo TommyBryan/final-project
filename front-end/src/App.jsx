@@ -6,12 +6,8 @@ import OverviewTab from './components/OverviewTab.jsx';
 import FlashcardsTab from './components/FlashcardsTab.jsx';
 import VideosTab from './components/VideosTab.jsx';
 import MusicPlayer from './components/MusicPlayer.jsx';
-<<<<<<< HEAD
+import WelcomeCard from './components/WelcomeCard.jsx';
 import { usePomodoroTimer } from "./hooks/UsePomodoroTimer.js";
-=======
-import WelcomeCard from './components/WelcomeCard.jsx'; // <--- Ensure this is imported
-import { usePomodoroTimer } from "./hooks/usePomodoroTimer.js";
->>>>>>> d275d53841883f3df353e1e9a01001a5bf152770
 import { useFlashcards } from "./hooks/useFlashcards.js";
 import { useTodos } from "./hooks/useTodos.js";
 
@@ -78,63 +74,56 @@ const {
         setActiveTab={setActiveTab}
       />
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
-<<<<<<< HEAD
-{activeTab === 'overview' && (
-  <OverviewTab
-    {...commonProps}
-    pomodoroProps={{
-      pomodoroTime,
-      pomodoroActive,
-      isBreak,
-      togglePomodoro,
-      resetPomodoro,
-      formatTime,
-      studyDuration,
-      breakDuration,
-      setStudyDuration,
-      setBreakDuration
-    }}
-    todoProps={{ todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo }}
-  />
-)}
-=======
-        {/* --- PLACE THE SIMPLIFIED WELCOMECARD HERE --- */}
-        <div className="mb-8"> 
-          <WelcomeCard 
-            user_name="Student" 
-            textClass={textClass}       // <--- Pass commonProps for text theming
-            secondaryText={secondaryText} // <--- Pass commonProps for text theming
-          /> 
-        </div>
-        {/* ------------------------------------------- */}
+<main className="max-w-7xl mx-auto px-4 py-8">
+  <div className="mb-8">
+    <WelcomeCard
+      user_name="Student"
+      textClass={textClass}
+      secondaryText={secondaryText}
+    />
+  </div>
 
-        {activeTab === 'overview' && (
-          <OverviewTab
-            {...commonProps}
-            pomodoroProps={{ pomodoroTime, pomodoroActive, isBreak, togglePomodoro, resetPomodoro, formatTime }}
-            todoProps={{ todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo }}
-          />
-        )}
->>>>>>> d275d53841883f3df353e1e9a01001a5bf152770
+  {activeTab === 'overview' && (
+    <OverviewTab
+      {...commonProps}
+      pomodoroProps={{
+        pomodoroTime,
+        pomodoroActive,
+        isBreak,
+        togglePomodoro,
+        resetPomodoro,
+        formatTime,
+        studyDuration,
+        breakDuration,
+        setStudyDuration,
+        setBreakDuration
+      }}
+      todoProps={{ todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo }}
+    />
+  )}
+  {activeTab === 'flashcards' && (
+    <FlashcardsTab
+      {...commonProps}
+      flashcardProps={{
+        flashcards,
+        addFlashcard,
+        flipCard,
+        newCardFront,
+        setNewCardFront,
+        newCardBack,
+        setNewCardBack
+      }}
+    />
+  )}
 
-        {activeTab === 'flashcards' && (
-          <FlashcardsTab
-            {...commonProps}
-            flashcardProps={{ flashcards, addFlashcard, flipCard, newCardFront, setNewCardFront, newCardBack, setNewCardBack }}
-          />
-        )}
-
-        {activeTab === 'videos' && (
-          <VideosTab
-            {...commonProps}
-            studyTopic={studyTopic}
-            setStudyTopic={setStudyTopic}
-          />
-        )}
-      </main>
-
-      {musicPlaying && <MusicPlayer {...commonProps} />}
+  {activeTab === 'videos' && (
+    <VideosTab
+      {...commonProps}
+      studyTopic={studyTopic}
+      setStudyTopic={setStudyTopic}
+    />
+  )}
+</main>
     </div>
   );
 }
