@@ -1,54 +1,78 @@
 // src/hooks/usePomodoroTimer.js
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 
-export function usePomodoroTimer() {
-  const [pomodoroTime, setPomodoroTime] = useState(25 * 60);
+export function usePomodoroTimer(defaultStudy = 25 * 60, defaultBreak = 5 * 60) {
+  // timer state
+  const [pomodoroTime, setPomodoroTime] = useState(defaultStudy);
   const [pomodoroActive, setPomodoroActive] = useState(false);
   const [isBreak, setIsBreak] = useState(false);
+
+  // configurable durations
+  const [studyDuration, setStudyDuration] = useState(defaultStudy);
+  const [breakDuration, setBreakDuration] = useState(defaultBreak);
+
+  // interval reference
   const intervalRef = useRef(null);
 
-  // adding sounds
-  const studyEndSound = useRef(new Audio('/sounds/'));
-  const breakEndSound = useRef(new Audio('/sounds/study-sound.wav'));
+  // sounds
+  const studyEndSound = useRef(new Audio("/sounds/study-sound.wav")); // play when break ends
+  const breakEndSound = useRef(new Audio("/sounds/break-sound.wav")); // play when study ends
 
+  // timer effect
   useEffect(() => {
-    if (pomodoroActive) {
-      intervalRef.current = setInterval(() => {
-        setPomodoroTime(prev => {
-          if (prev <= 1) {
-            setPomodoroActive(false);
+    if (!pomodoroActive) return;
 
-            //  play sound based on what ended
+    intervalRef.current = setInterval(() => {
+      setPomodoroTime((prev) => {
+        if (prev <= 1) {
+          // play the correct sound
+          try {
             if (isBreak) {
-              breakEndSound.current.play(); // break ended → back to study
+              studyEndSound.current.play();
             } else {
-              studyEndSound.current.play(); // study ended → time to break
+              breakEndSound.current.play();
             }
-
-            setIsBreak(!isBreak);
-            return isBreak ? 25 * 60 : 5 * 60; // swap durations
+          } catch (err) {
+            console.warn("Sound playback blocked:", err);
           }
-          return prev - 1;
-        });
-      }, 1000);
-    } else {
-      clearInterval(intervalRef.current);
-    }
-    return () => clearInterval(intervalRef.current);
-  }, [pomodoroActive, isBreak]);
 
+          // switch session
+          const nextIsBreak = !isBreak;
+          setIsBreak(nextIsBreak);
+
+          // return the next session duration
+          return nextIsBreak ? breakDuration : studyDuration;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    // cleanup
+    return () => clearInterval(intervalRef.current);
+  }, [pomodoroActive, isBreak, studyDuration, breakDuration]);
+
+  // format seconds to mm:ss
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const togglePomodoro = () => setPomodoroActive(!pomodoroActive);
+  // toggle start/pause
+  const togglePomodoro = () => setPomodoroActive((p) => !p);
+
+  // reset timer to current session
   const resetPomodoro = () => {
     setPomodoroActive(false);
-    setPomodoroTime(25 * 60);
-    setIsBreak(false);
+    setPomodoroTime(isBreak ? breakDuration : studyDuration);
   };
+
+  // reflect duration changes immediately if timer is paused
+  useEffect(() => {
+    if (!pomodoroActive) {
+      setPomodoroTime(isBreak ? breakDuration : studyDuration);
+    }
+  }, [studyDuration, breakDuration, isBreak, pomodoroActive]);
 
   return {
     pomodoroTime,
@@ -56,6 +80,10 @@ export function usePomodoroTimer() {
     isBreak,
     togglePomodoro,
     resetPomodoro,
-    formatTime
+    formatTime,
+    studyDuration,
+    breakDuration,
+    setStudyDuration: (mins) => setStudyDuration(mins * 60),
+    setBreakDuration: (mins) => setBreakDuration(mins * 60),
   };
 }
