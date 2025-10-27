@@ -5,11 +5,12 @@ import Header from './components/Header.jsx';
 import OverviewTab from './components/OverviewTab.jsx';
 import FlashcardsTab from './components/FlashcardsTab.jsx';
 import VideosTab from './components/VideosTab.jsx';
+import DocumentTab from './components/DocumentTab.jsx';
 import WelcomeCard from './components/WelcomeCard.jsx';
 import { usePomodoroTimer } from "./hooks/usePomodoroTimer.js";
 import { useFlashcards } from "./hooks/useFlashcards.js";
 import { useTodos } from "./hooks/useTodos.js";
-import { supabase } from './services/supabaseClient.js'; // make sure this is imported
+import { supabase } from './services/supabaseClient.js';
 
 export default function StudyAppDashboard() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -21,12 +22,13 @@ export default function StudyAppDashboard() {
       return false;
     }
   });
+
   const [activeTab, setActiveTab] = useState('overview');
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [studyTopic, setStudyTopic] = useState('React Programming');
   const [username, setUsername] = useState('User'); // default name
 
-  // fetch username from Supabase session
+  // Fetch username from Supabase session
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) {
@@ -36,7 +38,7 @@ export default function StudyAppDashboard() {
     });
   }, []);
 
-  // pomodoro timer hook
+  // Pomodoro timer hook
   const {
     pomodoroTime,
     pomodoroActive,
@@ -50,9 +52,11 @@ export default function StudyAppDashboard() {
     setBreakDuration
   } = usePomodoroTimer();
 
+  // Flashcards and todos hooks
   const { flashcards, addFlashcard, flipCard, deleteFlashcard, newCardFront, setNewCardFront, newCardBack, setNewCardBack } = useFlashcards();
   const { todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo } = useTodos();
 
+  // Save dark mode to localStorage
   useEffect(() => {
     try {
       localStorage.setItem('iNtellecta-darkMode', JSON.stringify(darkMode));
@@ -61,6 +65,7 @@ export default function StudyAppDashboard() {
     }
   }, [darkMode]);
 
+  // Theme classes
   const bgClass = darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 to-indigo-100';
   const cardBg = darkMode ? 'bg-gray-800' : 'bg-white';
   const textClass = darkMode ? 'text-gray-100' : 'text-gray-900';
@@ -84,7 +89,7 @@ export default function StudyAppDashboard() {
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
           <WelcomeCard
-            user_name={username} // pass actual username here
+            user_name={username} // pass actual username
             textClass={textClass}
             secondaryText={secondaryText}
           />
@@ -108,6 +113,7 @@ export default function StudyAppDashboard() {
             todoProps={{ todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo }}
           />
         )}
+
         {activeTab === 'flashcards' && (
           <FlashcardsTab
             {...commonProps}
@@ -123,11 +129,18 @@ export default function StudyAppDashboard() {
             }}
           />
         )}
+
         {activeTab === 'videos' && (
           <VideosTab
             {...commonProps}
             studyTopic={studyTopic}
             setStudyTopic={setStudyTopic}
+          />
+        )}
+
+        {activeTab === 'documents' && (
+          <DocumentTab
+            {...commonProps}
           />
         )}
       </main>

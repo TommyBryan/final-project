@@ -1,11 +1,8 @@
 // src/components/Header.jsx
 import React, { useState } from 'react';
 import { Moon, Sun, Music, Menu, X } from 'lucide-react';
-// Import Supabase client for logout functionality
 import { supabase } from '../services/supabaseClient';
-// Import navigation hook to redirect after logout
 import { useNavigate } from 'react-router-dom';
-
 import IntellectaLogo from '../assets/intellecta-logo.svg';
 
 export default function Header({
@@ -18,21 +15,16 @@ export default function Header({
   activeTab,
   setActiveTab
 }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Hamburger menu state
-  const navigate = useNavigate(); // Used for redirecting after logout
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
-  // Function to toggle mobile navigation menu
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Function to handle user logout
   const handleLogout = async () => {
     try {
-      // End user session
       await supabase.auth.signOut();
-
-      // Redirect to authentication page
       navigate('/auth');
     } catch (error) {
       console.error('Error signing out:', error.message);
@@ -59,9 +51,9 @@ export default function Header({
           <h1 className="text-2xl font-bold">iNtellecta</h1>
         </div>
 
-        {/* Desktop Navigation (hidden on small screens) */}
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex gap-1">
-          {['overview', 'flashcards', 'videos'].map((tab) => (
+          {['overview', 'flashcards', 'videos', 'documents'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -78,7 +70,7 @@ export default function Header({
           ))}
         </nav>
 
-        {/* Right-side Controls: Music, Dark Mode, Logout, Hamburger */}
+        {/* Right-side Controls */}
         <div className="flex items-center gap-4">
           {/* Music Toggle */}
           <button
@@ -114,7 +106,7 @@ export default function Header({
             Logout
           </button>
 
-          {/* Hamburger Menu for Mobile */}
+          {/* Hamburger Menu */}
           <button
             onClick={toggleMenu}
             className={`md:hidden p-2 rounded-lg ${
@@ -135,12 +127,12 @@ export default function Header({
           className={`md:hidden ${cardBg} pb-4 px-4 border-t ${borderClass} transition-all duration-300 ease-in-out`}
         >
           <nav className="flex flex-col gap-2 pt-2">
-            {['overview', 'flashcards', 'videos'].map((tab) => (
+            {['overview', 'flashcards', 'videos', 'documents'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => {
                   setActiveTab(tab);
-                  setIsMenuOpen(false); // Close menu after selection
+                  setIsMenuOpen(false);
                 }}
                 className={`${navItemClass} ${
                   activeTab === tab
