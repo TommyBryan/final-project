@@ -3,29 +3,43 @@ import { useState, useEffect } from "react";
 
 const FLASHCARDS_KEY = "iNtellecta-flashcards";
 
-// helper: Load from localStorage or fallback to sample cards
+// helper to get initial state from localStorage
 const getInitialFlashcards = () => {
   try {
-    const stored = localStorage.getItem(FLASHCARDS_KEY);
-    if (stored) return JSON.parse(stored);
-  } catch (err) {
-    console.error("Failed to load flashcards:", err);
+    const storedFlashcards = localStorage.getItem(FLASHCARDS_KEY);
+    return storedFlashcards
+      ? JSON.parse(storedFlashcards)
+      : [
+          {
+            id: 1,
+            front: "What is React?",
+            back: "A JavaScript library for building user interfaces",
+            flipped: false,
+          },
+          {
+            id: 2,
+            front: "What is a component?",
+            back: "A reusable piece of UI with its own logic and appearance",
+            flipped: false,
+          },
+        ];
+  } catch (error) {
+    console.error("Failed to load flashcards from localStorage:", error);
+    return [
+      {
+        id: 1,
+        front: "What is React?",
+        back: "A JavaScript library for building user interfaces",
+        flipped: false,
+      },
+      {
+        id: 2,
+        front: "What is a component?",
+        back: "A reusable piece of UI with its own logic and appearance",
+        flipped: false,
+      },
+    ]; // fallback to default
   }
-
-  return [
-    {
-      id: 1,
-      front: "What is React?",
-      back: "A JavaScript library for building user interfaces.",
-      flipped: false,
-    },
-    {
-      id: 2,
-      front: "What is a component?",
-      back: "A reusable piece of UI with its own logic and appearance.",
-      flipped: false,
-    },
-  ];
 };
 
 export function useFlashcards() {
@@ -33,25 +47,23 @@ export function useFlashcards() {
   const [newCardFront, setNewCardFront] = useState("");
   const [newCardBack, setNewCardBack] = useState("");
 
-  // persist to localStorage
+  // Save to localStorage whenever flashcards change
   useEffect(() => {
     try {
       localStorage.setItem(FLASHCARDS_KEY, JSON.stringify(flashcards));
-    } catch (err) {
-      console.error("Failed to save flashcards:", err);
+    } catch (error) {
+      console.error("Failed to save flashcards to localStorage:", error);
     }
   }, [flashcards]);
 
-  // flip front/back
   const flipCard = (id) => {
-    setFlashcards((prev) =>
-      prev.map((card) =>
+    setFlashcards((cards) =>
+      cards.map((card) =>
         card.id === id ? { ...card, flipped: !card.flipped } : card
       )
     );
   };
 
-  // add new flashcard
   const addFlashcard = () => {
     if (newCardFront.trim() && newCardBack.trim()) {
       setFlashcards((prev) => [
@@ -68,7 +80,7 @@ export function useFlashcards() {
     }
   };
 
-  // delete a flashcard
+  // delete function
   const deleteFlashcard = (id) => {
     setFlashcards((prev) => prev.filter((card) => card.id !== id));
   };
