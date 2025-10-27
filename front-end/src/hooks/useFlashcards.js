@@ -82,6 +82,7 @@ export function useFlashcards() {
 
   // delete function
   const deleteFlashcard = (id) => {
+    console.log("Deleting card id:", id);
     setFlashcards((prev) => prev.filter((card) => card.id !== id));
   };
 

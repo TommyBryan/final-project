@@ -50,7 +50,7 @@ export default function StudyAppDashboard() {
     setBreakDuration
   } = usePomodoroTimer();
 
-  const { flashcards, addFlashcard, flipCard, newCardFront, setNewCardFront, newCardBack, setNewCardBack } = useFlashcards();
+  const { flashcards, addFlashcard, flipCard, deleteFlashcard, newCardFront, setNewCardFront, newCardBack, setNewCardBack } = useFlashcards();
   const { todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo } = useTodos();
 
   useEffect(() => {
@@ -115,6 +115,7 @@ export default function StudyAppDashboard() {
               flashcards,
               addFlashcard,
               flipCard,
+              deleteFlashcard,
               newCardFront,
               setNewCardFront,
               newCardBack,
