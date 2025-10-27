@@ -1,3 +1,4 @@
+// src/pages/AuthPage.jsx
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../services/supabaseClient'
@@ -7,22 +8,21 @@ export default function AuthPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
-  const [error, setError] = useState('')``
+  const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     // Check if user is already logged in
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) {
-        navigate('/dashboard')
+        navigate('/')
       } else {
         setLoading(false)
       }
     })
 
-    // Optional: listen to auth state changes
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) navigate('/dashboard')
+      if (session) navigate('/')
     })
 
     return () => listener.subscription.unsubscribe()
@@ -40,7 +40,7 @@ export default function AuthPage() {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
-        navigate('/dashboard')
+        navigate('/')
       }
     } catch (err) {
       setError(err.message)
@@ -51,10 +51,7 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="p-6 bg-white shadow-lg rounded-xl w-80 flex flex-col gap-4"
-      >
+      <form onSubmit={handleSubmit} className="p-6 bg-white shadow-lg rounded-xl w-80 flex flex-col gap-4">
         <h2 className="text-xl font-bold text-center">
           {isSignUp ? 'Sign Up' : 'Sign In'}
         </h2>
@@ -75,13 +72,9 @@ export default function AuthPage() {
           className="border p-2 rounded"
           required
         />
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white py-2 rounded"
-        >
+        <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white py-2 rounded">
           {isSignUp ? 'Create Account' : 'Sign In'}
         </button>
-
         <button
           type="button"
           onClick={() => setIsSignUp(!isSignUp)}
