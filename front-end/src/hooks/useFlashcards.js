@@ -1,60 +1,41 @@
 // src/hooks/useFlashcards.js
 import { useState, useEffect } from "react";
+import { supabase } from '../services/supabaseClient';
 
-const FLASHCARDS_KEY = "iNtellecta-flashcards";
+// Helper to fetch flashcards from Supabase
+const fetchFlashcards = async () => {
+  const { data: session } = await supabase.auth.getSession();
+  if (!session?.session?.user) return [];
 
-// helper to get initial state from localStorage
-const getInitialFlashcards = () => {
-  try {
-    const storedFlashcards = localStorage.getItem(FLASHCARDS_KEY);
-    return storedFlashcards
-      ? JSON.parse(storedFlashcards)
-      : [
-          {
-            id: 1,
-            front: "What is React?",
-            back: "A JavaScript library for building user interfaces",
-            flipped: false,
-          },
-          {
-            id: 2,
-            front: "What is a component?",
-            back: "A reusable piece of UI with its own logic and appearance",
-            flipped: false,
-          },
-        ];
-  } catch (error) {
-    console.error("Failed to load flashcards from localStorage:", error);
-    return [
-      {
-        id: 1,
-        front: "What is React?",
-        back: "A JavaScript library for building user interfaces",
-        flipped: false,
-      },
-      {
-        id: 2,
-        front: "What is a component?",
-        back: "A reusable piece of UI with its own logic and appearance",
-        flipped: false,
-      },
-    ]; // fallback to default
+  const { data, error } = await supabase
+    .from('flashcards')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error("Error fetching flashcards:", error);
+    return [];
   }
-};
+
+  return data.map(card => ({ ...card, flipped: false })) || [];
 
 export function useFlashcards() {
-  const [flashcards, setFlashcards] = useState(getInitialFlashcards);
+  const [flashcards, setFlashcards] = useState([]);
   const [newCardFront, setNewCardFront] = useState("");
   const [newCardBack, setNewCardBack] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Save to localStorage whenever flashcards change
+  // Fetch flashcards on mount
   useEffect(() => {
-    try {
-      localStorage.setItem(FLASHCARDS_KEY, JSON.stringify(flashcards));
-    } catch (error) {
-      console.error("Failed to save flashcards to localStorage:", error);
-    }
-  }, [flashcards]);
+    const loadFlashcards = async () => {
+      setLoading(true);
+      const data = await fetchFlashcards();
+      setFlashcards(data);
+      setLoading(false);
+    };
+    loadFlashcards();
+  }, []);
 
   const flipCard = (id) => {
     setFlashcards((cards) =>
@@ -64,26 +45,49 @@ export function useFlashcards() {
     );
   };
 
-  const addFlashcard = () => {
-    if (newCardFront.trim() && newCardBack.trim()) {
-      setFlashcards((prev) => [
-        ...prev,
-        {
-          id: Date.now(),
-          front: newCardFront,
-          back: newCardBack,
-          flipped: false,
-        },
-      ]);
+  const addFlashcard = async () => {
+    if (!newCardFront.trim() || !newCardBack.trim()) return;
+    
+    setIsSubmitting(true);
+    try {
+      const { data: session } = await supabase.auth.getSession();
+      const { data, error } = await supabase
+        .from('flashcards')
+        .insert([{
+          front: newCardFront.trim(),
+          back: newCardBack.trim(),
+          user_id: session.session?.user?.id
+        }])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setFlashcards(cards => [{ ...data, flipped: false }, ...cards]);
       setNewCardFront("");
       setNewCardBack("");
+    } catch (error) {
+      console.error("Error adding flashcard:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  // delete function
-  const deleteFlashcard = (id) => {
-    console.log("Deleting card id:", id);
-    setFlashcards((prev) => prev.filter((card) => card.id !== id));
+  const deleteFlashcard = async (id) => {
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase
+        .from('flashcards')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      setFlashcards(cards => cards.filter(card => card.id !== id));
+    } catch (error) {
+      console.error("Error deleting flashcard:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return {
@@ -95,5 +99,7 @@ export function useFlashcards() {
     setNewCardFront,
     newCardBack,
     setNewCardBack,
+    loading,
+    isSubmitting
   };
 }

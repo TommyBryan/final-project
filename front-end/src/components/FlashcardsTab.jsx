@@ -19,6 +19,8 @@ export default function FlashcardsTab({
     setNewCardFront,
     newCardBack,
     setNewCardBack,
+    loading,
+    isSubmitting
   } = flashcardProps;
 
   return (
@@ -50,16 +52,39 @@ export default function FlashcardsTab({
         </div>
         <button
           onClick={addFlashcard}
-          className="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2"
+          disabled={isSubmitting}
+          className={`w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2 ${
+            isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
         >
-          <Plus className="w-5 h-5" />
-          Add Flashcard
+          {isSubmitting ? (
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <Plus className="w-5 h-5" />
+          )}
+          {isSubmitting ? 'Adding...' : 'Add Flashcard'}
         </button>
       </div>
 
       {/* flashcard grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {flashcards.map((card) => (
+        {loading ? (
+          // Loading skeleton
+          [...Array(3)].map((_, i) => (
+            <div
+              key={i}
+              className={`${cardBg} rounded-xl shadow-lg p-6 border ${borderClass} animate-pulse`}
+            >
+              <div className="h-48 bg-gray-300 dark:bg-gray-600 rounded-lg" />
+            </div>
+          ))
+        ) : flashcards.length === 0 ? (
+          <div className={`col-span-3 text-center ${secondaryText}`}>
+            No flashcards yet. Create your first one!
+          </div>
+        ) : (
+          flashcards.map((card) => {
+            return (
           <div
             key={card.id}
             className={`${cardBg} rounded-xl shadow-lg p-6 border ${borderClass} transform transition-all hover:scale-105 relative`}
@@ -70,23 +95,34 @@ export default function FlashcardsTab({
                 e.stopPropagation(); // prevent flipping when deleting
                 deleteFlashcard(card.id);
               }}
-              className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+              disabled={isSubmitting}
+              className={`absolute top-2 right-2 text-red-500 hover:text-red-700 ${
+                isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
               title="Delete flashcard"
             >
-              <Trash2 className="w-5 h-5" />
+              {isSubmitting ? (
+                <div className="w-5 h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Trash2 className="w-5 h-5" />
+              )}
             </button>
 
             {/* flip on click */}
             <div
-              onClick={() => flipCard(card.id)}
-              className="min-h-48 flex items-center justify-center cursor-pointer"
+              onClick={() => !isSubmitting && flipCard(card.id)}
+              className={`min-h-48 flex items-center justify-center ${
+                isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer'
+              }`}
             >
               <p className={`text-center text-lg ${textClass}`}>
                 {card.flipped ? card.back : card.front}
               </p>
             </div>
           </div>
-        ))}
+            );
+          })
+        )}
       </div>
     </div>
   );
