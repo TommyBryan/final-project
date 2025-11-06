@@ -18,6 +18,7 @@ const fetchFlashcards = async () => {
   }
 
   return data.map(card => ({ ...card, flipped: false })) || [];
+}; // closes fetchFlashcards
 
 export function useFlashcards() {
   const [flashcards, setFlashcards] = useState([]);
@@ -43,7 +44,7 @@ export function useFlashcards() {
         card.id === id ? { ...card, flipped: !card.flipped } : card
       )
     );
-  };
+  }; // closes flipCard
 
   const addFlashcard = async () => {
     if (!newCardFront.trim() || !newCardBack.trim()) return;
@@ -71,7 +72,7 @@ export function useFlashcards() {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }; // closes addFlashcard
 
   const deleteFlashcard = async (id) => {
     setIsSubmitting(true);
@@ -88,7 +89,7 @@ export function useFlashcards() {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }; // closes deleteFlashcard
 
   return {
     flashcards,
@@ -101,5 +102,5 @@ export function useFlashcards() {
     setNewCardBack,
     loading,
     isSubmitting
-  };
-}
+  }; // closes return object
+} // closes useFlashcards hook
