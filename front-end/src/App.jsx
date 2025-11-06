@@ -26,6 +26,7 @@ export default function StudyAppDashboard() {
   const [username, setUsername] = useState('User');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  // Fetch username from Supabase
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) {
@@ -35,16 +36,46 @@ export default function StudyAppDashboard() {
     });
   }, []);
 
-  const { pomodoroTime, pomodoroActive, isBreak, togglePomodoro, resetPomodoro, formatTime, studyDuration, breakDuration, setStudyDuration, setBreakDuration } = usePomodoroTimer();
-  const { flashcards, addFlashcard, flipCard, deleteFlashcard, newCardFront, setNewCardFront, newCardBack, setNewCardBack } = useFlashcards();
-  const { todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo } = useTodos();
+  // Hooks
+  const {
+    pomodoroTime,
+    pomodoroActive,
+    isBreak,
+    togglePomodoro,
+    resetPomodoro,
+    formatTime,
+    studyDuration,
+    breakDuration,
+    setStudyDuration,
+    setBreakDuration
+  } = usePomodoroTimer();
 
+  const {
+    flashcards,
+    addFlashcard,
+    flipCard,
+    deleteFlashcard,
+    newCardFront,
+    setNewCardFront,
+    newCardBack,
+    setNewCardBack
+  } = useFlashcards();
+
+  const {
+    todos,
+    newTodo,
+    setNewTodo,
+    addTodo,
+    toggleTodo,
+    deleteTodo
+  } = useTodos();
+
+  // Store dark mode preference
   useEffect(() => {
-    try { localStorage.setItem('iNtellecta-darkMode', JSON.stringify(darkMode)); } 
-    catch {}
+    try { localStorage.setItem('iNtellecta-darkMode', JSON.stringify(darkMode)); } catch {}
   }, [darkMode]);
 
-
+  // Styling
   const bgClass = darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 to-indigo-100';
   const cardBg = darkMode ? 'bg-gray-800' : 'bg-white';
   const textClass = darkMode ? 'text-gray-100' : 'text-gray-900';
@@ -53,16 +84,10 @@ export default function StudyAppDashboard() {
   const commonProps = { darkMode, cardBg, textClass, secondaryText, borderClass };
 
   return (
-    <div className={`min-h-screen ${bgClass} ${textClass} transition-colors duration-300`}>
+    <div className={`flex h-screen overflow-hidden ${bgClass} ${textClass} transition-colors duration-300`}>
       <Toaster position="bottom-right" />
 
-      <Header
-        darkMode={darkMode}
-        musicPlaying={musicPlaying}
-        setMusicPlaying={setMusicPlaying}
-        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-      />
-
+      {/* Sidebar */}
       <Sidebar
         {...commonProps}
         activeTab={activeTab}
@@ -70,34 +95,46 @@ export default function StudyAppDashboard() {
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
         setDarkMode={setDarkMode}
+        musicPlaying={musicPlaying}
+        setMusicPlaying={setMusicPlaying}
       />
 
-      <main className="max-w-7xl mx-auto px-4 py-8 relative z-10">
-        <WelcomeCard user_name={username} textClass={textClass} secondaryText={secondaryText} />
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col transition-all duration-300">
+        <Header
+          darkMode={darkMode}
+          musicPlaying={musicPlaying}
+          setMusicPlaying={setMusicPlaying}
+          toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        />
 
-        {activeTab === 'overview' && (
-          <OverviewTab
-            {...commonProps}
-            pomodoroProps={{ pomodoroTime, pomodoroActive, isBreak, togglePomodoro, resetPomodoro, formatTime, studyDuration, breakDuration, setStudyDuration, setBreakDuration }}
-            todoProps={{ todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo }}
-          />
-        )}
+        <main className="flex-1 overflow-y-auto px-6 py-8 relative z-10">
+          <WelcomeCard user_name={username} textClass={textClass} secondaryText={secondaryText} />
 
-        {activeTab === 'flashcards' && (
-          <FlashcardsTab
-            {...commonProps}
-            flashcardProps={{ flashcards, addFlashcard, flipCard, deleteFlashcard, newCardFront, setNewCardFront, newCardBack, setNewCardBack }}
-          />
-        )}
+          {activeTab === 'overview' && (
+            <OverviewTab
+              {...commonProps}
+              pomodoroProps={{ pomodoroTime, pomodoroActive, isBreak, togglePomodoro, resetPomodoro, formatTime, studyDuration, breakDuration, setStudyDuration, setBreakDuration }}
+              todoProps={{ todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo }}
+            />
+          )}
 
-        {activeTab === 'videos' && (
-          <VideosTab {...commonProps} studyTopic={studyTopic} setStudyTopic={setStudyTopic} />
-        )}
+          {activeTab === 'flashcards' && (
+            <FlashcardsTab
+              {...commonProps}
+              flashcardProps={{ flashcards, addFlashcard, flipCard, deleteFlashcard, newCardFront, setNewCardFront, newCardBack, setNewCardBack }}
+            />
+          )}
 
-        {activeTab === 'documents' && <DocumentTab {...commonProps} />}
-      </main>
+          {activeTab === 'videos' && (
+            <VideosTab {...commonProps} studyTopic={studyTopic} setStudyTopic={setStudyTopic} />
+          )}
 
-      {musicPlaying && <MusicPlayer {...commonProps} />}
+          {activeTab === 'documents' && <DocumentTab {...commonProps} />}
+        </main>
+
+        {musicPlaying && <MusicPlayer {...commonProps} />}
+      </div>
     </div>
   );
 }
