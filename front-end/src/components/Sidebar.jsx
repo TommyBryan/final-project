@@ -1,4 +1,3 @@
-// src/components/Sidebar.jsx
 import React from "react";
 import { Menu, X, Moon, Sun, Home, BookOpen, Video, FileText, Music } from "lucide-react";
 
@@ -12,17 +11,18 @@ export default function Sidebar({
   musicPlaying,
   setMusicPlaying,
 }) {
+  const iconSize = 24; // sidebar item icons size
+
   const sidebarItems = [
-    { name: "Overview", icon: <Home />, key: "overview" },
-    { name: "Flashcards", icon: <BookOpen />, key: "flashcards" },
-    { name: "Videos", icon: <Video />, key: "videos" },
-    { name: "Documents", icon: <FileText />, key: "documents" },
-    { name: "Music", icon: <Music />, key: "music" },
+    { name: "Overview", icon: <Home size={iconSize} />, key: "overview" },
+    { name: "Flashcards", icon: <BookOpen size={iconSize} />, key: "flashcards" },
+    { name: "Videos", icon: <Video size={iconSize} />, key: "videos" },
+    { name: "Documents", icon: <FileText size={iconSize} />, key: "documents" },
+    { name: "Music", icon: <Music size={iconSize} />, key: "music" },
   ];
 
   return (
     <>
-      {/* Overlay for small screens */}
       {isSidebarOpen && (
         <div
           className="fixed inset-0 bg-black/30 backdrop-blur-sm z-30 lg:hidden"
@@ -30,12 +30,11 @@ export default function Sidebar({
         ></div>
       )}
 
-      {/* Sidebar container */}
       <div
         className={`fixed top-0 left-0 h-full z-40 transition-all duration-300
-          ${isSidebarOpen ? "w-64" : "w-16"}
-          ${darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"}
-          shadow-lg flex flex-col justify-between`}
+        ${isSidebarOpen ? "w-64" : "w-20"}
+        ${darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"}
+        shadow-lg flex flex-col justify-between`}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4">
@@ -50,7 +49,7 @@ export default function Sidebar({
             className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           >
-            {isSidebarOpen ? <X size={28} /> : <Menu size={28} />}
+            {isSidebarOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
 
@@ -63,15 +62,11 @@ export default function Sidebar({
                 if (item.key === "music") setMusicPlaying(!musicPlaying);
                 else setActiveTab(item.key);
               }}
-              className={`flex items-center gap-3 p-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition
-                ${activeTab === item.key ? "bg-gray-300 dark:bg-gray-700" : ""}`}
+              className={`flex items-center gap-3 p-3 rounded-lg transition
+              ${activeTab === item.key ? (darkMode ? "bg-gray-700" : "bg-gray-300") : "hover:bg-gray-200 dark:hover:bg-gray-700"}`}
             >
-              {/* Icon wrapper ensures consistent size */}
-              <span className="flex-none w-12 h-12 flex items-center justify-center">
-                {React.cloneElement(item.icon, { size: 32 })}
-              </span>
-
-              {/* Label visible only if sidebar expanded */}
+              {/* Only the icon is bigger */}
+              <div className="flex-shrink-0">{item.icon}</div>
               <span
                 className={`overflow-hidden transition-all duration-300 ${
                   isSidebarOpen ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
@@ -96,7 +91,7 @@ export default function Sidebar({
             onClick={() => setDarkMode(!darkMode)}
             className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
           >
-            {darkMode ? <Moon size={32} /> : <Sun size={32} />}
+            {darkMode ? <Moon size={22} /> : <Sun size={22} />}
           </button>
         </div>
       </div>

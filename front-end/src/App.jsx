@@ -16,17 +16,14 @@ import { supabase } from './services/supabaseClient.js';
 
 export default function StudyAppDashboard() {
   const [darkMode, setDarkMode] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('iNtellecta-darkMode')) || false; } 
-    catch { return false; }
+    try { return JSON.parse(localStorage.getItem('iNtellecta-darkMode')) || false; } catch { return false; }
   });
-
   const [activeTab, setActiveTab] = useState('overview');
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [studyTopic, setStudyTopic] = useState('React Programming');
   const [username, setUsername] = useState('User');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Fetch username from Supabase
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) {
@@ -36,52 +33,20 @@ export default function StudyAppDashboard() {
     });
   }, []);
 
-  // Hooks
-  const {
-    pomodoroTime,
-    pomodoroActive,
-    isBreak,
-    togglePomodoro,
-    resetPomodoro,
-    formatTime,
-    studyDuration,
-    breakDuration,
-    setStudyDuration,
-    setBreakDuration
-  } = usePomodoroTimer();
+  const { pomodoroTime, pomodoroActive, isBreak, togglePomodoro, resetPomodoro, formatTime, studyDuration, breakDuration, setStudyDuration, setBreakDuration } = usePomodoroTimer();
+  const { flashcards, addFlashcard, flipCard, deleteFlashcard, newCardFront, setNewCardFront, newCardBack, setNewCardBack } = useFlashcards();
+  const { todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo } = useTodos();
 
-  const {
-    flashcards,
-    addFlashcard,
-    flipCard,
-    deleteFlashcard,
-    newCardFront,
-    setNewCardFront,
-    newCardBack,
-    setNewCardBack
-  } = useFlashcards();
+  useEffect(() => { try { localStorage.setItem('iNtellecta-darkMode', JSON.stringify(darkMode)); } catch {} }, [darkMode]);
 
-  const {
-    todos,
-    newTodo,
-    setNewTodo,
-    addTodo,
-    toggleTodo,
-    deleteTodo
-  } = useTodos();
-
-  // Store dark mode preference
-  useEffect(() => {
-    try { localStorage.setItem('iNtellecta-darkMode', JSON.stringify(darkMode)); } catch {}
-  }, [darkMode]);
-
-  // Styling
   const bgClass = darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 to-indigo-100';
   const cardBg = darkMode ? 'bg-gray-800' : 'bg-white';
   const textClass = darkMode ? 'text-gray-100' : 'text-gray-900';
   const secondaryText = darkMode ? 'text-gray-400' : 'text-gray-600';
   const borderClass = darkMode ? 'border-gray-700' : 'border-gray-200';
   const commonProps = { darkMode, cardBg, textClass, secondaryText, borderClass };
+
+  const sidebarWidth = isSidebarOpen ? 256 : 80; // in pixels
 
   return (
     <div className={`flex h-screen overflow-hidden ${bgClass} ${textClass} transition-colors duration-300`}>
@@ -99,13 +64,16 @@ export default function StudyAppDashboard() {
         setMusicPlaying={setMusicPlaying}
       />
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col transition-all duration-300">
+      {/* Main content */}
+      <div
+        className="flex flex-col flex-1 transition-[margin] duration-300 ease-in-out"
+        style={{ marginLeft: sidebarWidth }}
+      >
+        {/* Header without toggle */}
         <Header
           darkMode={darkMode}
           musicPlaying={musicPlaying}
           setMusicPlaying={setMusicPlaying}
-          toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         />
 
         <main className="flex-1 overflow-y-auto px-6 py-8 relative z-10">
