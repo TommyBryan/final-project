@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, X, Moon, Sun, Home, BookOpen, Video, FileText, Music } from "lucide-react";
+import { Menu, X, Moon, Sun, Home, BookOpen, Video, FileText, Music, UserCircle, LogOut } from "lucide-react";
 
 export default function Sidebar({
   isSidebarOpen,
@@ -10,6 +10,7 @@ export default function Sidebar({
   setActiveTab,
   musicPlaying,
   setMusicPlaying,
+  signOut,
 }) {
   const iconSize = 24; // sidebar item icons size
 
@@ -77,6 +78,29 @@ export default function Sidebar({
             </button>
           ))}
         </nav>
+
+        {/* Profile Section */}
+        <div className="p-4 border-t border-gray-300 dark:border-gray-700">
+          <div className="flex items-center gap-3 p-2">
+            <UserCircle size={iconSize} />
+            <span className={`overflow-hidden transition-all duration-300 ${
+              isSidebarOpen ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
+            }`}>
+              Profile
+            </span>
+          </div>
+          <button
+            onClick={signOut}
+            className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition mt-2"
+          >
+            <LogOut size={iconSize} />
+            <span className={`overflow-hidden transition-all duration-300 ${
+              isSidebarOpen ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
+            }`}>
+              Sign Out
+            </span>
+          </button>
+        </div>
 
         {/* Dark Mode Toggle */}
         <div className="p-4 border-t border-gray-300 dark:border-gray-700 flex items-center justify-between">
