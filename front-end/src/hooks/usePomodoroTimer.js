@@ -67,13 +67,6 @@ export function usePomodoroTimer(defaultStudy = 25 * 60, defaultBreak = 5 * 60) 
     setPomodoroTime(isBreak ? breakDuration : studyDuration);
   };
 
-  // reflect duration changes immediately if timer is paused
-  useEffect(() => {
-    if (!pomodoroActive) {
-      setPomodoroTime(isBreak ? breakDuration : studyDuration);
-    }
-  }, [studyDuration, breakDuration, isBreak, pomodoroActive]);
-
   return {
     pomodoroTime,
     pomodoroActive,
