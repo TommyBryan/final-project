@@ -144,8 +144,8 @@ export default function VideosTab({ darkMode, cardBg, textClass, secondaryText, 
           <div key={video.id} className={`${cardBg} rounded-xl shadow-lg overflow-hidden border ${borderClass}`}>
             {editingId === video.id ? (
               <div className="p-4">
-                <input className={`w-full px-3 py-2 rounded-lg border ${borderClass} mb-2`} value={editUrl} onChange={(e) => setEditUrl(e.target.value)} />
-                <input className={`w-full px-3 py-2 rounded-lg border ${borderClass} mb-2`} value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
+                <input className={`w-full px-3 py-2 rounded-lg border ${borderClass} mb-2 ${darkMode ? 'bg-gray-700' : 'bg-white'}`} value={editUrl} onChange={(e) => setEditUrl(e.target.value)} />
+                <input className={`w-full px-3 py-2 rounded-lg border ${borderClass} mb-2 ${darkMode ? 'bg-gray-700' : 'bg-white'}`} value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
                 <div className="flex gap-2">
                   <button className="px-3 py-1 rounded bg-green-600 text-white" onClick={() => saveEdit(video.id)}>Save</button>
                   <button className="px-3 py-1 rounded bg-gray-400 text-black" onClick={cancelEdit}>Cancel</button>
@@ -155,7 +155,6 @@ export default function VideosTab({ darkMode, cardBg, textClass, secondaryText, 
               <>
                 <div className={`aspect-video ${darkMode ? 'bg-gray-700' : 'bg-gray-200'} flex items-center justify-center`}>
                   {video.thumbnail ? (
-                    // eslint-disable-next-line jsx-a11y/img-redundant-alt
                     <img src={video.thumbnail} alt={`Thumbnail for ${video.title || 'video'}`} className="object-cover w-full h-full" />
                   ) : (
                     <Video className={`w-12 h-12 ${secondaryText}`} />
