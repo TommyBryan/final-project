@@ -75,29 +75,24 @@ export default function PomodoroTimer({
       <div className={`w-full mt-8 pt-6 border-t ${borderClass} flex justify-around items-center`}>
         <div className="text-center">
           <label htmlFor="study-duration" className={`block text-sm font-medium ${secondaryText}`}>
-            Study (min)
+            Study Duration (min)
           </label>
           <input
             type="number"
             id="study-duration"
-            value={Math.round(studyDuration / 60)} // convert seconds -> minutes for display
-            onChange={(e) => setStudyDuration(Number(e.target.value))} // expects minutes
-            className={`w-24 mt-1 p-2 text-center rounded-md border ${borderClass} ${cardBg} ${textClass} focus:ring-2 focus:ring-indigo-500 disabled:opacity-50`}
-            disabled={pomodoroActive} // disable while running
+            min="1"
+            max="120"
+            value={Math.round(studyDuration / 60)}
+            onChange={(e) => {
+              const value = Math.max(1, Math.min(120, Number(e.target.value)));
+              setStudyDuration(value);
+            }}
+            className={`w-32 mt-1 p-2 text-center rounded-md border ${borderClass} ${cardBg} ${textClass} focus:ring-2 focus:ring-indigo-500 disabled:opacity-50`}
+            disabled={pomodoroActive}
           />
-        </div>
-        <div className="text-center">
-          <label htmlFor="break-duration" className={`block text-sm font-medium ${secondaryText}`}>
-            Break (min)
-          </label>
-          <input
-            type="number"
-            id="break-duration"
-            value={Math.round(breakDuration / 60)} // convert seconds -> minutes for display
-            onChange={(e) => setBreakDuration(Number(e.target.value))} // expects minutes
-            className={`w-24 mt-1 p-2 text-center rounded-md border ${borderClass} ${cardBg} ${textClass} focus:ring-2 focus:ring-indigo-500 disabled:opacity-50`}
-            disabled={pomodoroActive} // disable while running
-          />
+          <p className={`text-xs mt-1 ${secondaryText}`}>
+            Break: {Math.round(breakDuration / 60)} min
+          </p>
         </div>
       </div>
     </div>
