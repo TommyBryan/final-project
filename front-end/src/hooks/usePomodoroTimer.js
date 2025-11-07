@@ -9,7 +9,7 @@ export function usePomodoroTimer(defaultStudy = 25 * 60, defaultBreak = 5 * 60) 
 
   // configurable durations
   const [studyDuration, setStudyDuration] = useState(defaultStudy);
-  const [breakDuration, setBreakDuration] = useState(defaultBreak);
+  const [breakDuration, setBreakDuration] = useState(defaultStudy / 5); // 1/5 of study time
 
   // interval reference
   const intervalRef = useRef(null);
@@ -61,18 +61,28 @@ export function usePomodoroTimer(defaultStudy = 25 * 60, defaultBreak = 5 * 60) 
   // toggle start/pause
   const togglePomodoro = () => setPomodoroActive((p) => !p);
 
+  // Update break duration when study duration changes
+  const updateStudyDuration = (mins) => {
+    const studySeconds = mins * 60;
+    setStudyDuration(studySeconds);
+    setBreakDuration(studySeconds / 5); // Break is 1/5 of study time
+    
+    // Reset and update timer if we're in study mode
+    if (!isBreak) {
+      setPomodoroTime(studySeconds);
+    }
+    
+    // If timer is running, stop it
+    if (pomodoroActive) {
+      setPomodoroActive(false);
+    }
+  };
+
   // reset timer to current session
   const resetPomodoro = () => {
     setPomodoroActive(false);
     setPomodoroTime(isBreak ? breakDuration : studyDuration);
   };
-
-  // reflect duration changes immediately if timer is paused
-  useEffect(() => {
-    if (!pomodoroActive) {
-      setPomodoroTime(isBreak ? breakDuration : studyDuration);
-    }
-  }, [studyDuration, breakDuration, isBreak, pomodoroActive]);
 
   return {
     pomodoroTime,
@@ -83,7 +93,7 @@ export function usePomodoroTimer(defaultStudy = 25 * 60, defaultBreak = 5 * 60) 
     formatTime,
     studyDuration,
     breakDuration,
-    setStudyDuration: (mins) => setStudyDuration(mins * 60),
-    setBreakDuration: (mins) => setBreakDuration(mins * 60),
+    setStudyDuration: updateStudyDuration,
+    setBreakDuration: () => {}, // Keep for compatibility but make it no-op
   };
 }

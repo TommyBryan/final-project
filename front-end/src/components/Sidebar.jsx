@@ -1,4 +1,5 @@
 import React from "react";
+<<<<<<< HEAD
 import {
   Menu,
   X,
@@ -10,6 +11,10 @@ import {
   FileText,
   Music,
 } from "lucide-react";
+=======
+import { Menu, X, Moon, Sun, Home, BookOpen, Video, FileText, Music, UserCircle, LogOut } from "lucide-react";
+import { supabase } from "../services/supabaseClient";
+>>>>>>> 1b1da56d4fed020e658d8012ed8cf8ea8be6bc9a
 
 export default function Sidebar({
   isSidebarOpen,
@@ -20,6 +25,7 @@ export default function Sidebar({
   setActiveTab,
   musicPlaying,
   setMusicPlaying,
+  signOut,
 }) {
   // Bigger icons for better visibility
   const iconSize = 32;
@@ -31,6 +37,17 @@ export default function Sidebar({
     { name: "Documents", icon: <FileText size={iconSize} />, key: "documents" },
     { name: "Music", icon: <Music size={iconSize} />, key: "music" },
   ];
+
+  const handleSignOut = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      // Redirect to login page or handle sign out success
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Error signing out:", error.message);
+    }
+  };
 
   return (
     <>
@@ -70,6 +87,7 @@ export default function Sidebar({
 
         {/* Navigation Items */}
         <nav className="flex-1 flex flex-col gap-3 px-2 mt-2">
+<<<<<<< HEAD
           {sidebarItems.map((item) => {
             const isActive = activeTab === item.key;
             const isMusic = item.key === "music";
@@ -90,6 +108,23 @@ export default function Sidebar({
                 className={`flex items-center gap-4 p-3 rounded-lg transition-all duration-200 ease-in-out
                 ${isActive ? bgActive : ""}
                 ${bgHover}`}
+=======
+          {sidebarItems.map((item) => (
+            <button
+              key={item.key}
+              onClick={() => {
+                if (item.key === "music") setMusicPlaying(!musicPlaying);
+                else setActiveTab(item.key);
+              }}
+              className={`flex items-center ${!isSidebarOpen ? 'justify-center' : ''} gap-3 p-3 rounded-lg transition
+              ${activeTab === item.key ? (darkMode ? "bg-gray-700" : "bg-gray-300") : "hover:bg-gray-200 dark:hover:bg-gray-700"}`}
+            >
+              <div className="flex-shrink-0 w-6 flex justify-center">{item.icon}</div>
+              <span
+                className={`overflow-hidden transition-all duration-300 ${
+                  isSidebarOpen ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
+                }`}
+>>>>>>> 1b1da56d4fed020e658d8012ed8cf8ea8be6bc9a
               >
                 {/* Icon only */}
                 <div className="flex-shrink-0">{item.icon}</div>
@@ -107,8 +142,32 @@ export default function Sidebar({
           })}
         </nav>
 
+        {/* Profile Section */}
+        <div className="p-4 border-t border-gray-300 dark:border-gray-700">
+          <div className={`flex items-center ${!isSidebarOpen ? 'justify-center' : ''} gap-3 p-2`}>
+            <div className="flex-shrink-0 w-6 flex justify-center"><UserCircle size={iconSize} /></div>
+            <span className={`overflow-hidden transition-all duration-300 ${
+              isSidebarOpen ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
+            }`}>
+              Profile
+            </span>
+          </div>
+          <button
+            onClick={handleSignOut}
+            className={`w-full flex items-center ${!isSidebarOpen ? 'justify-center' : ''} gap-3 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition mt-2`}
+          >
+            <div className="flex-shrink-0 w-6 flex justify-center"><LogOut size={iconSize} /></div>
+            <span className={`overflow-hidden transition-all duration-300 ${
+              isSidebarOpen ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
+            }`}>
+              Sign Out
+            </span>
+          </button>
+        </div>
+
         {/* Dark Mode Toggle */}
         <div className="p-4 border-t border-gray-300 dark:border-gray-700 flex items-center justify-between">
+<<<<<<< HEAD
           <span
             className={`overflow-hidden transition-all duration-300 ${
               isSidebarOpen
@@ -124,6 +183,21 @@ export default function Sidebar({
           >
             {darkMode ? <Moon size={26} /> : <Sun size={26} />}
           </button>
+=======
+          <span className={`overflow-hidden transition-all duration-300 ${
+            isSidebarOpen ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
+          }`}>
+            {darkMode ? "Dark Mode" : "Light Mode"}
+          </span>
+          <div className={`flex-shrink-0 w-6 flex justify-center ${!isSidebarOpen ? 'mx-auto' : ''}`}>
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+            >
+              {darkMode ? <Moon size={22} /> : <Sun size={22} />}
+            </button>
+          </div>
+>>>>>>> 1b1da56d4fed020e658d8012ed8cf8ea8be6bc9a
         </div>
       </div>
     </>
