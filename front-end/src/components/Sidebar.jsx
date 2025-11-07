@@ -75,11 +75,10 @@ export default function Sidebar({
                 if (item.key === "music") setMusicPlaying(!musicPlaying);
                 else setActiveTab(item.key);
               }}
-              className={`flex items-center gap-3 p-3 rounded-lg transition
+              className={`flex items-center ${!isSidebarOpen ? 'justify-center' : ''} gap-3 p-3 rounded-lg transition
               ${activeTab === item.key ? (darkMode ? "bg-gray-700" : "bg-gray-300") : "hover:bg-gray-200 dark:hover:bg-gray-700"}`}
             >
-              {/* Only the icon is bigger */}
-              <div className="flex-shrink-0">{item.icon}</div>
+              <div className="flex-shrink-0 w-6 flex justify-center">{item.icon}</div>
               <span
                 className={`overflow-hidden transition-all duration-300 ${
                   isSidebarOpen ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
@@ -93,8 +92,8 @@ export default function Sidebar({
 
         {/* Profile Section */}
         <div className="p-4 border-t border-gray-300 dark:border-gray-700">
-          <div className="flex items-center gap-3 p-2">
-            <UserCircle size={iconSize} />
+          <div className={`flex items-center ${!isSidebarOpen ? 'justify-center' : ''} gap-3 p-2`}>
+            <div className="flex-shrink-0 w-6 flex justify-center"><UserCircle size={iconSize} /></div>
             <span className={`overflow-hidden transition-all duration-300 ${
               isSidebarOpen ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
             }`}>
@@ -103,9 +102,9 @@ export default function Sidebar({
           </div>
           <button
             onClick={handleSignOut}
-            className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition mt-2"
+            className={`w-full flex items-center ${!isSidebarOpen ? 'justify-center' : ''} gap-3 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition mt-2`}
           >
-            <LogOut size={iconSize} />
+            <div className="flex-shrink-0 w-6 flex justify-center"><LogOut size={iconSize} /></div>
             <span className={`overflow-hidden transition-all duration-300 ${
               isSidebarOpen ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
             }`}>
@@ -116,19 +115,19 @@ export default function Sidebar({
 
         {/* Dark Mode Toggle */}
         <div className="p-4 border-t border-gray-300 dark:border-gray-700 flex items-center justify-between">
-          <span
-            className={`overflow-hidden transition-all duration-300 ${
-              isSidebarOpen ? "opacity-100 max-w-full" : "opacity-0 max-w-0 lg:opacity-100 lg:max-w-full"
-            }`}
-          >
+          <span className={`overflow-hidden transition-all duration-300 ${
+            isSidebarOpen ? "opacity-100 max-w-full" : "opacity-0 max-w-0"
+          }`}>
             {darkMode ? "Dark Mode" : "Light Mode"}
           </span>
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-          >
-            {darkMode ? <Moon size={22} /> : <Sun size={22} />}
-          </button>
+          <div className={`flex-shrink-0 w-6 flex justify-center ${!isSidebarOpen ? 'mx-auto' : ''}`}>
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+            >
+              {darkMode ? <Moon size={22} /> : <Sun size={22} />}
+            </button>
+          </div>
         </div>
       </div>
     </>
