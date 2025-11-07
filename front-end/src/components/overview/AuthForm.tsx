@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { supabase } from '../supabaseClient'
-
+import { supabase } from '../../services/supabaseClient'
 export default function AuthForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
