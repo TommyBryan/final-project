@@ -1,5 +1,6 @@
 import React from "react";
 import { Menu, X, Moon, Sun, Home, BookOpen, Video, FileText, Music, UserCircle, LogOut } from "lucide-react";
+import { supabase } from "../services/supabaseClient";
 
 export default function Sidebar({
   isSidebarOpen,
@@ -21,6 +22,17 @@ export default function Sidebar({
     { name: "Documents", icon: <FileText size={iconSize} />, key: "documents" },
     { name: "Music", icon: <Music size={iconSize} />, key: "music" },
   ];
+
+  const handleSignOut = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      // Redirect to login page or handle sign out success
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Error signing out:", error.message);
+    }
+  };
 
   return (
     <>
@@ -90,7 +102,7 @@ export default function Sidebar({
             </span>
           </div>
           <button
-            onClick={signOut}
+            onClick={handleSignOut}
             className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition mt-2"
           >
             <LogOut size={iconSize} />
