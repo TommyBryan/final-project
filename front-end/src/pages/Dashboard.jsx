@@ -36,9 +36,9 @@ export default function Dashboard() {
 		}
 	}
 
-	if (loading) return <p>Loading...</p>
-
-	return (
+	if (loading) {
+		return <p>Loading...</p>
+	}	return (
 		<div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
 			<h1 className="text-3xl mb-4">Welcome, {user?.email}</h1>
 			<button
