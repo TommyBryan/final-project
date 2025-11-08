@@ -7,12 +7,17 @@ export default function ProtectedRoute({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session)
+    supabase.auth.getSession().then(({ data, error }) => {
+      console.log('Session check:', { data, error })
+      setSession(data?.session)
+      setLoading(false)
+    }).catch(err => {
+      console.error('Session check error:', err)
       setLoading(false)
     })
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log('Auth state change:', { session })
       setSession(session)
     })
 

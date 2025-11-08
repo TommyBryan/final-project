@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../services/supabaseClient'
 export default function AuthForm() {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -13,11 +15,14 @@ export default function AuthForm() {
     if (isLogin) {
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) alert(error.message)
-      else alert('Logged in successfully!')
+      else navigate('/')
     } else {
       const { error } = await supabase.auth.signUp({ email, password })
       if (error) alert(error.message)
-      else alert('Check your email to confirm your sign-up!')
+      else {
+        alert('Check your email to confirm your sign-up!')
+        setIsLogin(true)
+      }
     }
 
     setLoading(false)

@@ -9,6 +9,8 @@ import {
   Video,
   FileText,
   Music,
+  UserCircle,
+  LogOut,
 } from "lucide-react";
 
 export default function Sidebar({
@@ -35,10 +37,7 @@ export default function Sidebar({
 
   const handleSignOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      // Redirect to login page or handle sign out success
-      window.location.href = "/login";
+      await signOut();
     } catch (error) {
       console.error("Error signing out:", error.message);
     }

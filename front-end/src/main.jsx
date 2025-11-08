@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import App from './App'
 import AuthPage from './pages/AuthPage'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -10,10 +10,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        {/* Auth page is public */}
+        {/* Public routes */}
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/signin" element={<AuthPage />} />
+        <Route path="/signup" element={<AuthPage />} />
 
-        {/* Dashboard (App.jsx) is protected */}
+        {/* Protected dashboard route */}
         <Route
           path="/"
           element={
@@ -23,8 +25,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           }
         />
 
-        {/* Catch-all: redirect to /auth if unknown path */}
-        <Route path="*" element={<AuthPage />} />
+        {/* Catch-all: redirect to auth */}
+        <Route path="*" element={<Navigate to="/auth" replace />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

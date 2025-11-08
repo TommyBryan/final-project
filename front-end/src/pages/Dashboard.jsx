@@ -27,12 +27,14 @@ export default function Dashboard() {
 		return () => listener.subscription.unsubscribe()
 	}, [])
 
-	const handleSignOut = async () => {
-		await supabase.auth.signOut()
-		navigate('/auth')
-	}
-
-	if (loading) return <p>Loading...</p>
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut()
+      navigate('/auth')
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
+  }	if (loading) return <p>Loading...</p>
 
 	return (
 		<div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">

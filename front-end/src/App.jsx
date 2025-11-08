@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Header from "./components/Header.jsx";
 import Sidebar from "./components/Sidebar.jsx";
@@ -13,7 +14,8 @@ import { useFlashcards } from "./hooks/useFlashcards.js";
 import { useTodos } from "./hooks/useTodos.js";
 import { supabase } from "./services/supabaseClient.js";
 
-export default function StudyAppDashboard() {
+export default function App() {
+  const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("iNtellecta-darkMode")) || false;
@@ -87,6 +89,15 @@ export default function StudyAppDashboard() {
 
   const sidebarWidth = isSidebarOpen ? 256 : 80;
 
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut()
+      navigate('/auth')
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
+  }
+
   return (
     <div
       className={`flex h-screen overflow-hidden ${bgClass} ${textClass} transition-colors duration-300`}
@@ -103,6 +114,7 @@ export default function StudyAppDashboard() {
         setDarkMode={setDarkMode}
         musicPlaying={musicPlaying}
         setMusicPlaying={setMusicPlaying}
+        signOut={handleSignOut}
       />
 
       {/* Main Content */}

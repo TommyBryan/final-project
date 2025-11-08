@@ -26,7 +26,7 @@ export default function AuthPage() {
     })
 
     return () => listener.subscription.unsubscribe()
-  }, [])
+  }, [navigate])
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -39,9 +39,9 @@ export default function AuthPage() {
           password,
           options: { data: { username: name } }
         })
-        // if (error) throw error
-        // alert('Check your email to confirm your account!')
-        // setIsSignUp(false)
+        if (error) throw error
+        alert('Check your email to confirm your account!')
+        setIsSignUp(false)
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
