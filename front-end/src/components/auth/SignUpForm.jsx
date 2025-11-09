@@ -1,33 +1,38 @@
+// Import necessary dependencies
 import { useState } from 'react'
 import { supabase } from '../../services/supabaseClient'
 
 export default function SignUpForm() {
+	// Form state management
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [name, setName] = useState('')
+	// UI state management
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState('')
 	const [success, setSuccess] = useState(false)
 
+	// Handle form submission for sign up
 	const handleSignUp = async (e) => {
-		e.preventDefault()
-		setError('')
-		setLoading(true)
+		e.preventDefault() // Prevent default form submission
+		setError('') // Clear any previous errors
+		setLoading(true) // Show loading state
 
 		try {
+			// Attempt to create new account with Supabase
 			const { error } = await supabase.auth.signUp({
 				email,
 				password,
 				options: {
-					data: { username: name }
+					data: { username: name } // Add username to user metadata
 				}
 			})
 			if (error) throw error
-			setSuccess(true)
+			setSuccess(true) // Show success message
 		} catch (error) {
-			setError(error.message)
+			setError(error.message) // Display any errors
 		} finally {
-			setLoading(false)
+			setLoading(false) // Reset loading state
 		}
 	}
 

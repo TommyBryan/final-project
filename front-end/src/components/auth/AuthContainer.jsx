@@ -1,11 +1,15 @@
+// Import necessary components and hooks
 import { useState } from 'react'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 import ForgotPasswordForm from './ForgotPasswordForm'
 
+// Main container component that manages which auth form to display
 export default function AuthContainer({ darkMode }) {
+	// State to track which form to show (signin, signup, or forgot password)
 	const [authMode, setAuthMode] = useState('signin')
 
+	// Function to render the appropriate form based on authMode
 	const renderForm = () => {
 		switch (authMode) {
 			case 'signup':

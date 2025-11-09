@@ -1,4 +1,4 @@
-// src/pages/AuthPage.jsx
+// Main authentication page component
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../services/supabaseClient'
@@ -7,14 +7,17 @@ import { Moon, Sun } from 'lucide-react'
 import AuthContainer from '../components/auth/AuthContainer'
 
 export default function AuthPage() {
+	// Navigation and UI state management
 	const navigate = useNavigate()
 	const [darkMode, setDarkMode] = useState(false)
 	const [loading, setLoading] = useState(true)
 
+	// Check for existing session on component mount
 	useEffect(() => {
+		// Get current session from Supabase
 		supabase.auth.getSession().then(({ data }) => {
-			if (data.session) navigate('/')
-			else setLoading(false)
+			if (data.session) navigate('/') // Redirect to dashboard if session exists
+			else setLoading(false) // Show auth forms if no session
 		})
 
 		const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {

@@ -1,27 +1,32 @@
+// Import necessary dependencies
 import { useState } from 'react'
 import { supabase } from '../../services/supabaseClient'
 
 export default function ForgotPasswordForm() {
+	// Form state management
 	const [email, setEmail] = useState('')
+	// UI state management
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState('')
 	const [success, setSuccess] = useState(false)
 
+	// Handle password reset request
 	const handleResetPassword = async (e) => {
-		e.preventDefault()
-		setError('')
-		setLoading(true)
+		e.preventDefault() // Prevent default form submission
+		setError('') // Clear any previous errors
+		setLoading(true) // Show loading state
 
 		try {
+			// Request password reset email from Supabase
 			const { error } = await supabase.auth.resetPasswordForEmail(email, {
-				redirectTo: window.location.origin + '/reset-password',
+				redirectTo: window.location.origin + '/reset-password', // Redirect URL after reset
 			})
 			if (error) throw error
-			setSuccess(true)
+			setSuccess(true) // Show success message
 		} catch (error) {
-			setError(error.message)
+			setError(error.message) // Display any errors
 		} finally {
-			setLoading(false)
+			setLoading(false) // Reset loading state
 		}
 	}
 
