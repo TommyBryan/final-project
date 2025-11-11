@@ -4,7 +4,7 @@ import { Upload, Trash2 } from 'lucide-react';
 
 const DOCUMENTS_KEY = "iNtellecta-documents";
 
-export default function DocumentTab({ darkMode, cardBg, textClass, secondaryText, borderClass }) {
+export default function DocumentTab({ cardBg, textClass, secondaryText, borderClass }) {
   const [documents, setDocuments] = useState([]);
 
   // Load saved documents from localStorage on mount
