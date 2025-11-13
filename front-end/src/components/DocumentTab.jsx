@@ -26,7 +26,7 @@ export default function DocumentTab({ cardBg, textClass, secondaryText, borderCl
       for (const file of pdfFiles) {
         // Upload file to Supabase Storage
         const { publicUrl } = await storageService.uploadFile({
-          bucket: 'documents',
+          bucket: 'pdfs',
           file,
           path: `pdfs/${Date.now()}-${Math.random().toString(36).substring(7)}.${file.name.split('.').pop()}`,
         });
@@ -55,7 +55,7 @@ export default function DocumentTab({ cardBg, textClass, secondaryText, borderCl
         
         // Delete from storage
         await storageService.deleteFile({
-          bucket: 'documents',
+          bucket: 'pdfs',
           path: filePath,
         });
       }
