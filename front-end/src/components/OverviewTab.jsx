@@ -15,11 +15,16 @@ export default function OverviewTab({
   const commonProps = { darkMode, cardBg, textClass, secondaryText, borderClass };
 
   return (
-    <div
-      className="grid grid-cols-1 lg:grid-cols-2 gap-6 transition-all duration-300"
-    >
-      <PomodoroTimer {...commonProps} {...pomodoroProps} />
-      <TodoList {...commonProps} {...todoProps} />
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 transition-all duration-300">
+      {/* Main left area: Pomodoro takes the left (and middle) columns on large screens */}
+      <div className="lg:col-span-2">
+        <PomodoroTimer {...commonProps} {...pomodoroProps} />
+      </div>
+
+      {/* Right aside: Todo list */}
+      <aside className="lg:col-span-1">
+        <TodoList {...commonProps} {...todoProps} />
+      </aside>
     </div>
   );
 }
