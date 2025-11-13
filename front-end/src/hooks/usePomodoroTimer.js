@@ -9,7 +9,7 @@ export function usePomodoroTimer(defaultStudy = 25 * 60, defaultBreak = 5 * 60) 
 
   // configurable durations
   const [studyDuration, setStudyDuration] = useState(defaultStudy);
-  const [breakDuration, setBreakDuration] = useState(defaultStudy / 5); // 1/5 of study time
+  const [breakDuration, setBreakDuration] = useState(defaultBreak);
 
   // interval reference
   const intervalRef = useRef(null);
@@ -18,6 +18,15 @@ export function usePomodoroTimer(defaultStudy = 25 * 60, defaultBreak = 5 * 60) 
   const studyEndSound = useRef(new Audio("/sounds/study-sound.wav")); // play when break ends
   const breakEndSound = useRef(new Audio("/sounds/break-sound.wav")); // play when study ends
 
+  // helper to play a sound
+  const playSound = (soundRef) => {
+    try {
+      soundRef.current.play();
+    } catch (err) {
+      console.warn("Sound playback blocked:", err);
+    }
+  };
+
   // timer effect
   useEffect(() => {
     if (!pomodoroActive) return;
@@ -25,16 +34,8 @@ export function usePomodoroTimer(defaultStudy = 25 * 60, defaultBreak = 5 * 60) 
     intervalRef.current = setInterval(() => {
       setPomodoroTime((prev) => {
         if (prev <= 1) {
-          // play the correct sound
-          try {
-            if (isBreak) {
-              studyEndSound.current.play();
-            } else {
-              breakEndSound.current.play();
-            }
-          } catch (err) {
-            console.warn("Sound playback blocked:", err);
-          }
+          // play the correct sound at the end of session
+          playSound(isBreak ? studyEndSound : breakEndSound);
 
           // switch session
           const nextIsBreak = !isBreak;
@@ -59,19 +60,30 @@ export function usePomodoroTimer(defaultStudy = 25 * 60, defaultBreak = 5 * 60) 
   };
 
   // toggle start/pause
-  const togglePomodoro = () => setPomodoroActive((p) => !p);
+  const togglePomodoro = () => {
+    setPomodoroActive((prev) => {
+      const newState = !prev;
+
+      // play sound immediately when starting
+      if (newState) {
+        playSound(isBreak ? studyEndSound : breakEndSound);
+      }
+
+      return newState;
+    });
+  };
 
   // Update break duration when study duration changes
   const updateStudyDuration = (mins) => {
     const studySeconds = mins * 60;
     setStudyDuration(studySeconds);
     setBreakDuration(studySeconds / 5); // Break is 1/5 of study time
-    
+
     // Reset and update timer if we're in study mode
     if (!isBreak) {
       setPomodoroTime(studySeconds);
     }
-    
+
     // If timer is running, stop it
     if (pomodoroActive) {
       setPomodoroActive(false);
@@ -94,6 +106,6 @@ export function usePomodoroTimer(defaultStudy = 25 * 60, defaultBreak = 5 * 60) 
     studyDuration,
     breakDuration,
     setStudyDuration: updateStudyDuration,
-    setBreakDuration: () => {}, // Keep for compatibility but make it no-op
+    setBreakDuration: () => {}, 
   };
 }
