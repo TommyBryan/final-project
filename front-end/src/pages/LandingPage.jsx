@@ -28,8 +28,7 @@ export default function LandingPage() {
     );
   }
 
-  // Redirect logged-in users to the dashboard
-  if (session) return <Navigate to="/dashboard" replace />;
+  if (session) return <Navigate to="/" replace />
 
   const bgClass = darkMode ? 'bg-gray-900 text-gray-200' : 'bg-gradient-to-br from-indigo-100 via-white to-blue-100';
   const cardBgClass = darkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800';

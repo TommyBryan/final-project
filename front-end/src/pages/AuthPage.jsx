@@ -16,12 +16,12 @@ export default function AuthPage() {
 	useEffect(() => {
 		// Get current session from Supabase
 		supabase.auth.getSession().then(({ data }) => {
-			if (data.session) navigate('/') // Redirect to dashboard if session exists
+			if (data.session) navigate('/dashboard') // Redirect to dashboard if session exists
 			else setLoading(false) // Show auth forms if no session
 		})
 
 		const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-			if (session) navigate('/')
+			if (session) navigate('/dashboard')
 		})
 
 		return () => listener.subscription.unsubscribe()
