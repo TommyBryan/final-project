@@ -95,8 +95,12 @@ export default function Sidebar({
               <button
                 key={item.key}
                 onClick={() => {
-                  if (isMusic) setMusicPlaying(!musicPlaying);
-                  else setActiveTab(item.key);
+                  if (isMusic) {
+                    setMusicPlaying(!musicPlaying);
+                    return;
+                  }
+
+                  setActiveTab(item.key);
                 }}
                 className={`flex items-center gap-4 p-3 rounded-lg transition-all duration-200 ease-in-out
                 ${isActive ? bgActive : ""}
