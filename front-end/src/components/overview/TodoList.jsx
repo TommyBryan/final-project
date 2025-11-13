@@ -2,7 +2,7 @@
 import React from 'react';
 import { ListTodo, Plus, Check, X } from 'lucide-react';
 
-export default function TodoList({ darkMode, cardBg, secondaryText, borderClass, todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo }) {
+export default function TodoList({ darkMode, cardBg, borderClass, todos, newTodo, setNewTodo, addTodo, toggleTodo, deleteTodo }) {
   return (
     <div className={`${cardBg} rounded-xl shadow-lg p-6 border ${borderClass} lg:col-span-2`}>
       <div className="flex items-center gap-2 mb-4">

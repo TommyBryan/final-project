@@ -28,7 +28,7 @@ export default function LandingPage() {
     )
   }
 
-  if (session) return <Navigate to="/" replace />
+  if (session) return <Navigate to="/dashboard" replace />
 
   const bgClass = darkMode ? 'bg-gray-900 text-gray-200' : 'bg-gradient-to-br from-indigo-100 via-white to-blue-100'
   const cardBgClass = darkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'
