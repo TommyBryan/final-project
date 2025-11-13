@@ -1,55 +1,48 @@
 // src/hooks/useTodos.jsx
 import { useState, useEffect } from 'react';
 import { supabase } from '../services/supabaseClient';
-
-// Helper to fetch todos from Supabase
-const fetchTodos = async () => {
-  const { data: session } = await supabase.auth.getSession();
-  if (!session?.session?.user) return [];
-
-  const { data, error } = await supabase
-    .from('todos')
-    .select('*')
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    console.error("Error fetching todos:", error);
-    return [];
-  }
-
-  return data || [];
-};
+import * as todosService from '../services/todos';
+import { ensureUserProfile } from '../services/profileHelpers';
 
 export function useTodos() {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState('');
   const [loading, setLoading] = useState(true);
 
+  const load = async () => {
+    setLoading(true);
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const userId = sessionData?.session?.user?.id;
+      if (!userId) {
+        setTodos([]);
+        setLoading(false);
+        return;
+      }
+      const data = await todosService.listTodos({ userId });
+      setTodos(data);
+    } catch (error) {
+      console.error('Error loading todos:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Fetch todos on mount
   useEffect(() => {
-    const loadTodos = async () => {
-      setLoading(true);
-      const data = await fetchTodos();
-      setTodos(data);
-      setLoading(false);
-    };
-    loadTodos();
+    load();
   }, []);
 
   const toggleTodo = async (id) => {
     const todo = todos.find(t => t.id === id);
     if (!todo) return;
 
-    const { error } = await supabase
-      .from('todos')
-      .update({ completed: !todo.completed })
-      .eq('id', id);
-
-    if (!error) {
+    try {
+      await todosService.updateTodo(id, { completed: !todo.completed });
       setTodos(todos.map(t => 
         t.id === id ? { ...t, completed: !t.completed } : t
       ));
-    } else {
+    } catch (error) {
       console.error("Error updating todo:", error);
     }
   };
@@ -57,33 +50,31 @@ export function useTodos() {
   const addTodo = async () => {
     if (!newTodo.trim()) return;
 
-    const { data, error } = await supabase
-      .from('todos')
-      .insert([{ 
-        text: newTodo.trim(), 
+    try {
+      // Ensure profile exists before inserting
+      const profile = await ensureUserProfile();
+      console.log('Profile for todo:', profile);
+      
+      const newTodoItem = await todosService.addTodo({
+        user_id: profile.id,
+        text: newTodo.trim(),
         completed: false,
-        user_id: (await supabase.auth.getSession()).data.session?.user?.id
-      }])
-      .select()
-      .single();
+      });
 
-    if (!error && data) {
-      setTodos([data, ...todos]);
+      console.log('Todo added successfully:', newTodoItem);
+      setTodos([newTodoItem, ...todos]);
       setNewTodo('');
-    } else {
+    } catch (error) {
       console.error("Error adding todo:", error);
+      alert(`Failed to add todo: ${error.message}`);
     }
   };
 
   const deleteTodo = async (id) => {
-    const { error } = await supabase
-      .from('todos')
-      .delete()
-      .eq('id', id);
-
-    if (!error) {
+    try {
+      await todosService.deleteTodo(id);
       setTodos(todos.filter(todo => todo.id !== id));
-    } else {
+    } catch (error) {
       console.error("Error deleting todo:", error);
     }
   };
