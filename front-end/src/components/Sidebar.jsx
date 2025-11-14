@@ -8,7 +8,6 @@ import {
   BookOpen,
   Video,
   FileText,
-  Music,
   UserCircle,
   LogOut,
 } from "lucide-react";
@@ -20,8 +19,6 @@ export default function Sidebar({
   setDarkMode,
   activeTab,
   setActiveTab,
-  musicPlaying,
-  setMusicPlaying,
   signOut,
 }) {
   // Bigger icons for better visibility
@@ -32,7 +29,6 @@ export default function Sidebar({
     { name: "Flashcards", icon: <BookOpen size={iconSize} />, key: "flashcards" },
     { name: "Videos", icon: <Video size={iconSize} />, key: "videos" },
     { name: "Documents", icon: <FileText size={iconSize} />, key: "documents" },
-    { name: "Music", icon: <Music size={iconSize} />, key: "music" },
   ];
 
   const handleSignOut = async () => {
@@ -83,7 +79,6 @@ export default function Sidebar({
         <nav className="flex-1 flex flex-col gap-3 px-2 mt-2">
           {sidebarItems.map((item) => {
             const isActive = activeTab === item.key;
-            const isMusic = item.key === "music";
             const bgActive = darkMode
               ? "bg-gray-700 text-white"
               : "bg-gray-200 text-gray-900";
@@ -94,14 +89,7 @@ export default function Sidebar({
             return (
               <button
                 key={item.key}
-                onClick={() => {
-                  if (isMusic) {
-                    setMusicPlaying(!musicPlaying);
-                    return;
-                  }
-
-                  setActiveTab(item.key);
-                }}
+                onClick={() => setActiveTab(item.key)}
                 className={`flex items-center gap-4 p-3 rounded-lg transition-all duration-200 ease-in-out
                 ${isActive ? bgActive : ""}
                 ${bgHover}`}
