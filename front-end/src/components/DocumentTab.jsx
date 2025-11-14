@@ -25,11 +25,7 @@ export default function DocumentTab({ cardBg, textClass, secondaryText, borderCl
     try {
       for (const file of pdfFiles) {
         // Upload file to Supabase Storage
-        const { publicUrl } = await storageService.uploadFile({
-          bucket: 'pdfs',
-          file,
-          path: `pdfs/${Date.now()}-${Math.random().toString(36).substring(7)}.${file.name.split('.').pop()}`,
-        });
+        const { publicUrl } = await storageService.uploadPdf(file);
 
         // Add to database
         await add({
@@ -51,13 +47,11 @@ export default function DocumentTab({ cardBg, textClass, secondaryText, borderCl
       // Extract file path from URL if it's in Supabase storage
       if (file.file_url.includes('supabase')) {
         const urlParts = file.file_url.split('/');
-        const filePath = urlParts.slice(urlParts.indexOf('pdfs')).join('/');
+        const userIdIndex = urlParts.indexOf('pdfs') + 1;
+        const filePath = urlParts.slice(userIdIndex).join('/');
         
         // Delete from storage
-        await storageService.deleteFile({
-          bucket: 'pdfs',
-          path: filePath,
-        });
+        await storageService.deleteFile(filePath);
       }
 
       // Delete from database

@@ -38,8 +38,7 @@ export default function PomodoroTimer({
     // To make the box bigger, adjust `col-span-*`, increase `p-*`, or change text/icon sizes inside.
     
     // Box size and shape controlled here
-    <div className={`col-span-1 lg:col-span-1 p-8 rounded-2xl shadow-lg flex flex-col items-center justify-between ${cardBg} border ${borderClass}`}>
-      
+    <div className={`col-span-1 lg:col-span-1 p-8 rounded-2xl shadow-lg flex flex-col items-center justify-between ${cardBg} border ${borderClass}`}>      
       {/* header section */}
       <div className="w-full text-center">
         <h2 className={`text-xl font-bold ${textClass}`}>Pomodoro Timer</h2>
