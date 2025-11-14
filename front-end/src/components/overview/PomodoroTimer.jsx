@@ -22,7 +22,6 @@ export default function PomodoroTimer({
   studyDuration,
   breakDuration,
   setStudyDuration,
-  setBreakDuration
 }) {
   // subtitle that reflects current session
   const timerLabel = isBreak ? "Time for a Break" : "Time to Focus";
