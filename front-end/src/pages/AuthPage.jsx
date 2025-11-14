@@ -1,10 +1,11 @@
 // Main authentication page component
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../services/supabaseClient'
 import IntellectaLogo from '../assets/intellecta-logo.svg'
-import { Moon, Sun } from 'lucide-react'
+import { Moon, Sun, Home, Building, Building2 } from 'lucide-react'
 import AuthContainer from '../components/auth/AuthContainer'
+import { BuildingOffice2Icon } from '@heroicons/react/24/solid'
 
 export default function AuthPage() {
 	// Navigation and UI state management
@@ -33,6 +34,12 @@ export default function AuthPage() {
 		<div className={`min-h-screen flex flex-col items-center justify-center transition-colors ${
 			darkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900'
 		}`}>
+			{/* Header with Logo */}
+			<Link to="/" className="absolute top-4 left-4 flex items-center gap-2 hover:opacity-80 transition-opacity">
+				<BuildingOffice2Icon className="w-6 h-6 text-indigo-700" />
+				<span className="text-xl font-bold text-indigo-700">About us</span>
+			</Link>
+
 			{/* Dark mode toggle button */}
 			<button
 				onClick={() => setDarkMode(!darkMode)}
