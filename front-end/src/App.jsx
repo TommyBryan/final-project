@@ -26,7 +26,7 @@ export default function App() {
 
   const [activeTab, setActiveTab] = useState("overview");
   const [musicPlaying, setMusicPlaying] = useState(false);
-  const [studyTopic, setStudyTopic] = useState("React Programming");
+  const [studyTopic, setStudyTopic] = useState();
   const [username, setUsername] = useState("User");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -75,7 +75,9 @@ export default function App() {
   useEffect(() => {
     try {
       localStorage.setItem("iNtellecta-darkMode", JSON.stringify(darkMode));
-    } catch {}
+    } catch {
+      // Ignore localStorage errors (e.g., in incognito mode)
+    }
   }, [darkMode]);
 
   const bgClass = darkMode

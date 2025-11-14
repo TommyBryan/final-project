@@ -26,7 +26,7 @@ export default function SignInForm() {
 				password
 			})
 			if (error) throw error
-			navigate('/') // Redirect to dashboard on success
+			navigate('/dashboard') // Redirect to dashboard on success
 		} catch (error) {
 			setError(error.message) // Display any errors
 		} finally {
