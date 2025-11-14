@@ -64,7 +64,7 @@ export default function LandingPage() {
         </h2>
         <p className="text-lg max-w-2xl mb-8">
           iNtellecta is your all-in-one productivity hub featuring a Pomodoro timer,
-          flashcards, AI study helpers, and to-do tracking to help you stay organized and focused.
+          flashcards, and to-do tracking to help you stay organized and focused.
         </p>
 
         <div className="flex flex-wrap justify-center gap-4 mb-16">
@@ -105,7 +105,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className={`py-6 text-center text-sm border-t ${borderColor}`}>
-        <p>© {new Date().getFullYear()} iNtellecta • Built by Paola & Tommy</p>
+        <p>© {new Date().getFullYear()} iNtellecta • Built by Paola & Tommy ᥫ᭡.</p>
         <div className="flex justify-center mt-2 gap-4">
           <a href="https://linkedin.com/in/paola-gonzalez-726322257" className="hover:text-indigo-600 transition">
             Paola's LinkedIn
