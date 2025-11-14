@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { supabase } from '../services/supabaseClient';
 import Logo from '../assets/intellecta-logo.svg';
 import { SunIcon, MoonIcon } from '@heroicons/react/24/solid';
 
 export default function LandingPage() {
-  const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
 
   // Check Supabase session
   useEffect(() => {
     const checkSession = async () => {
-      const { data, error } = await supabase.auth.getSession();
+      const { error } = await supabase.auth.getSession();
       if (error) console.error('Error fetching session:', error);
-      setSession(data?.session || null);
       setLoading(false);
     };
     checkSession();
@@ -28,8 +26,6 @@ export default function LandingPage() {
     );
   }
 
-  if (session) return <Navigate to="/" replace />
-
   const bgClass = darkMode ? 'bg-gray-900 text-gray-200' : 'bg-gradient-to-br from-indigo-100 via-white to-blue-100';
   const cardBgClass = darkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800';
   const borderColor = darkMode ? 'border-gray-700' : 'border-gray-200';
@@ -38,10 +34,8 @@ export default function LandingPage() {
     <div className={`min-h-screen flex flex-col ${bgClass} transition-colors duration-300`}>
       {/* Navbar */}
       <header className="flex justify-between items-center px-8 py-6">
-        <div className="flex items-center gap-3">
           <img src={Logo} alt="iNtellecta Logo" className="h-10 w-10" />
           <h1 className="text-3xl font-extrabold text-indigo-700">iNtellecta</h1>
-        </div>
 
         <div className="flex items-center gap-4">
           {/* Dark Mode Toggle Icon */}
