@@ -25,12 +25,12 @@ export default function DocumentTab({ cardBg, textClass, secondaryText, borderCl
     try {
       for (const file of pdfFiles) {
         // Upload file to Supabase Storage
-        const { publicUrl } = await storageService.uploadPdf(file);
+        const { signedUrl } = await storageService.uploadPdf(file);
 
         // Add to database
         await add({
           file_name: file.name,
-          file_url: publicUrl,
+          file_url: signedUrl,
         });
       }
     } catch (error) {

@@ -4,7 +4,7 @@ import { supabase } from './supabaseClient';
 /**
  * Upload a PDF file to the pdfs bucket with user-specific path
  * @param {File} file - The PDF file to upload
- * @returns {Promise<Object>} Object with path and publicUrl
+ * @returns {Promise<Object>} Object with path and signedUrl
  */
 export async function uploadPdf(file) {
   const {
@@ -15,18 +15,44 @@ export async function uploadPdf(file) {
 
   const filePath = `${user.id}/${file.name}`;
 
-  const { error } = await supabase.storage
+  const { data: _data, error } = await supabase.storage
     .from("pdfs")
     .upload(filePath, file);
 
-  if (error) throw error;
+  if (error) {
+    console.error("Upload error:", error);
+    throw error;
+  }
 
-  // Get public URL
-  const { data: { publicUrl } } = supabase.storage
+  // Get signed URL (valid for 1 hour)
+  const { data: signedData, error: signedError } = await supabase.storage
     .from("pdfs")
-    .getPublicUrl(filePath);
+    .createSignedUrl(filePath, 3600);
 
-  return { path: filePath, publicUrl };
+  if (signedError) {
+    console.error("Signed URL error:", signedError);
+    throw signedError;
+  }
+
+  return { path: filePath, signedUrl: signedData.signedUrl };
+}
+
+/**
+ * Get signed URL for a file
+ * @param {string} path - The file path
+ * @returns {Promise<string>} Signed URL
+ */
+export async function getSignedUrl(path) {
+  const { data, error } = await supabase.storage
+    .from("pdfs")
+    .createSignedUrl(path, 3600);
+
+  if (error) {
+    console.error("Signed URL error:", error);
+    throw error;
+  }
+
+  return data.signedUrl;
 }
 
 /**

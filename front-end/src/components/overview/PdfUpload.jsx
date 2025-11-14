@@ -1,6 +1,6 @@
 // src/components/overview/PdfUpload.jsx
 import React from 'react';
-import { Upload } from 'lucide-react';
+import { Upload, FileText } from 'lucide-react';
 
 export default function PdfUpload({ darkMode, cardBg, secondaryText, borderClass }) {
   return (
@@ -10,7 +10,7 @@ export default function PdfUpload({ darkMode, cardBg, secondaryText, borderClass
         <h2 className="text-xl font-semibold">Upload Study Materials</h2>
       </div>
       <div className={`border-2 border-dashed ${borderClass} rounded-lg p-8 text-center cursor-pointer hover:border-indigo-600 transition-colors`}>
-        <Upload className={`w-12 h-12 mx-auto mb-3 ${secondaryText}`} />
+        <FileText className={`w-12 h-12 mx-auto mb-3 ${secondaryText}`} />
         <p className="font-medium mb-1">Click to upload or drag and drop</p>
         <p className={`text-sm ${secondaryText}`}>PDF files up to 10MB</p>
       </div>
