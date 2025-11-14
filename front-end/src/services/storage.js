@@ -2,64 +2,45 @@
 import { supabase } from './supabaseClient';
 
 /**
- * Upload a file to Supabase Storage
- * @param {Object} params - Parameters object
- * @param {string} params.bucket - The storage bucket name
- * @param {File} params.file - The file to upload
- * @param {string} params.path - Optional custom path (default: auto-generated)
- * @returns {Promise<Object>} Object with filePath and publicUrl
+ * Upload a PDF file to the pdfs bucket with user-specific path
+ * @param {File} file - The PDF file to upload
+ * @returns {Promise<Object>} Object with path and publicUrl
  */
-export async function uploadFile({ bucket, file, path }) {
-  const fileExt = file.name.split('.').pop();
-  const fileName = path || `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-  const filePath = fileName.includes('/') ? fileName : `${bucket}/${fileName}`;
+export async function uploadPdf(file) {
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
 
-  const { error: uploadError } = await supabase.storage
-    .from(bucket)
+  if (!user) throw new Error("Not authenticated");
+
+  const filePath = `${user.id}/${file.name}`;
+
+  const { error } = await supabase.storage
+    .from("pdfs")
     .upload(filePath, file);
 
-  if (uploadError) {
-    console.error('Upload error:', uploadError);
-    throw uploadError;
-  }
+  if (error) throw error;
 
   // Get public URL
   const { data: { publicUrl } } = supabase.storage
-    .from(bucket)
+    .from("pdfs")
     .getPublicUrl(filePath);
 
-  return { filePath, publicUrl };
+  return { path: filePath, publicUrl };
 }
 
 /**
  * Delete a file from Supabase Storage
- * @param {Object} params - Parameters object
- * @param {string} params.bucket - The storage bucket name
- * @param {string} params.path - The file path to delete
+ * @param {string} path - The file path to delete from the pdfs bucket
  * @returns {Promise<void>}
  */
-export async function deleteFile({ bucket, path }) {
+export async function deleteFile(path) {
   const { error } = await supabase.storage
-    .from(bucket)
+    .from("pdfs")
     .remove([path]);
 
   if (error) {
     console.error('Delete error:', error);
     throw error;
   }
-}
-
-/**
- * Get public URL for a file
- * @param {Object} params - Parameters object
- * @param {string} params.bucket - The storage bucket name
- * @param {string} params.path - The file path
- * @returns {string} The public URL
- */
-export function getPublicUrl({ bucket, path }) {
-  const { data: { publicUrl } } = supabase.storage
-    .from(bucket)
-    .getPublicUrl(path);
-
-  return publicUrl;
 }

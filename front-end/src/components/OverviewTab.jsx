@@ -25,6 +25,19 @@ export default function OverviewTab({
         </div>
       </div>
 
+{/*
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 transition-all duration-300">
+  <div className="lg:col-span-2">
+    <PomodoroTimer {...commonProps} {...pomodoroProps} />
+  </div>
+
+  <aside className="lg:col-span-1">
+    <TodoList {...commonProps} {...todoProps} />
+  </aside>
+</div>
+*/}
+
+
       {/* To-Do List Section */}
       <div className="flex justify-center items-start">
         <div className="w-full max-w-md">
